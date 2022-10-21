@@ -81,7 +81,7 @@ const JobListItem = ({ navigation }, props) => {
            
 
             setInfoConpany(info)
-            debugger
+            // debugger
             AsyncStorage.setItem("idCity", resJob.city_id)
 
           }

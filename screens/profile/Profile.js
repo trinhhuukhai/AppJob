@@ -26,11 +26,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Profile({ navigation }, props) {
 
-
+   
 
     useEffect(() => {
-        getUserDetail()
         getProfile()
+        getUserDetail()
+        
     }, [])
 
     //user

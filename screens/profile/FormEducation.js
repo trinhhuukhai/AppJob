@@ -21,7 +21,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { convertToArray } from '../../utilies/Validation'
 
-const FormEducation = () => {
+const FormEducation = ({ navigation }) => {
 
     const [school_name, setName] = useState('')
     const [field_of_study, setField] = useState('')
@@ -33,40 +33,40 @@ const FormEducation = () => {
     const [access, setAccess] = useState('')
 
 
-    useEffect(() => {
-        handleGetToken();
-    }, [handleGetToken]);
+    const saveJob = async () => {
+        try {
+            const dataToken = await AsyncStorage.getItem('access');
+            // debugger
+            axios
+                .post('https://spiderpig83.pythonanywhere.com/api/v1/self/education',
+                    {
+                        school_name: school_name,
+                        field_of_study: field_of_study,
+                        description: description,
+                        start_date: start_date,
+                        end_date: end_date
+                    }, {
+                    "headers": {
+                        'Authorization': `Bearer ${dataToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                },)
+                .then(res => {
+                    console.log('them thanh cong')
+                    debugger
 
-    const handleGetToken = async () => {
-        const accessApi = await AsyncStorage.getItem("access");
-        setAccess(accessApi)
+                })
+                .catch(e => {
+                    alert("Save không thành công!!")
+                    console.log(`post error ${e}`);
+                    // debugger
+
+                });
+        } catch (error) {
+            throw error
+        }
+
     };
-
-    const data = [
-        school_name,
-        field_of_study,
-        description,
-        start_date, end_date
-    ]
-     const postData = ()=>{
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access}`
-          }
-          
-          axios.post('https://spiderpig83.pythonanywhere.com/api/v1/self/education', data, {
-              headers: headers
-            })
-            .then((response) => {
-                debugger
-                console.log(response)
-
-            })
-            .catch((error) => {
-                console.log(`ep: ${error}`)
-            })
-     }
-
 
     return (
         <ScrollView>
@@ -159,7 +159,8 @@ const FormEducation = () => {
                     <TouchableOpacity
 
                         onPress={() => {
-                            postData()
+                            saveJob()
+                            navigation.navigate('Profile')
                         }}
                         style={{
                             backgroundColor: colors.primary,

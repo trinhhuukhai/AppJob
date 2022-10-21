@@ -49,6 +49,7 @@ const JobList = ({ navigation }) => {
                     } else {
                         let resJob = res.data.companies
                         setCompany(resJob)
+                        // debugger
                        
 
 
@@ -180,6 +181,7 @@ const JobList = ({ navigation }) => {
                             onPress={() => {
                                 AsyncStorage.setItem("companyId", item.id)
                                 AsyncStorage.setItem("companyName", item.name)
+                                AsyncStorage.setItem("IdCity", item.city_id)
                                 navigation.navigate("JobListItem")
                             }
                             }
