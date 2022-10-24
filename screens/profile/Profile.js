@@ -275,7 +275,8 @@ function Profile({ navigation }, props) {
                             }}
                         />
                         <FlatList
-                            data={education}
+                        // ref={}
+                            data={[...education]}
                             keyExtractor={item => item.id}
                             renderItem={({ item }) => <View
                                 style={{

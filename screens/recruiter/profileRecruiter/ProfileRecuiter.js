@@ -92,10 +92,6 @@ const ProfileRecuiter = () => {
                         marginTop: 10,
                         color: 'black'
                     }}>{userName}</Text>
-                    <Text>Thanh pho cua cong ty</Text>
-                    <Text>So luong nhan vien toi thieu</Text>
-                    <Text>So luong nhan vien toi da</Text>
-                    <Text></Text>
                 </View>
     </View>
   )

@@ -23,7 +23,43 @@ function ViewProfileUser({ navigation }, props) {
     useEffect(() => {
         getUserDetail()
         getProfile()
+        // getJobApply()
     }, [])
+
+    //job_detail_apply
+
+
+    const setStatus = async () => {
+        try {
+            const dataToken = await AsyncStorage.getItem('access');
+            const id = await AsyncStorage.getItem('IdJobApply');
+            // debugger
+            axios
+                .put(`https://spiderpig83.pythonanywhere.com/api/v1/job/applied/${id}`,
+                    {
+                        status:"Accepted"
+                    }, {
+                    "headers": {
+                        'Authorization': `Bearer ${dataToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                },)
+                .then(res => {
+                    console.log('Accept thanh cong')
+                    debugger
+
+                })
+                .catch(e => {
+                    alert("Save không thành công!!")
+                    console.log(`post error ${e}`);
+                    // debugger
+
+                });
+        } catch (error) {
+            throw error
+        }
+
+    };
 
     //user
     const [userApi, setUserApi] = useState([])
@@ -54,7 +90,7 @@ function ViewProfileUser({ navigation }, props) {
                         user.phone = responseUser.phone_number
                         user.dob = responseUser.date_of_birth
                         user.gender = responseUser.gender
-                        
+
                         // debugger
                         setUserApi(user)
                         // console.log(res)
@@ -135,17 +171,22 @@ function ViewProfileUser({ navigation }, props) {
     return (
         <ScrollView>
 
+            <View
+                style={{
+                    padding: 10,
+                    width: '100%',
+                    backgroundColor: 'gray',
+                    height: 100,
+                }}
+            />
+            <View style={{
+                flexDirection:'row',
+                justifyContent:'space-around'
+            }}>
                 <View
                     style={{
-                        padding: 10,
-                        width: '100%',
-                        backgroundColor: 'gray',
-                        height: 100,
-                    }}
-                />
-                <View
-                    style={{
-                        alignItems: 'center',
+                        // alignItems: 'center',
+                        // paddingStart: 20
                     }}>
                     <Image
                         source={images.profile_user}
@@ -153,7 +194,7 @@ function ViewProfileUser({ navigation }, props) {
                             width: 100,
                             height: 100,
                             borderRadius: 100,
-                            marginTop: -50,
+                            marginTop: -70,
                         }}
                     />
                     <Text
@@ -201,342 +242,371 @@ function ViewProfileUser({ navigation }, props) {
                         {location}
                     </Text>
                 </View>
+                <TouchableOpacity
 
+                    onPress={() => {
+                        setStatus()
 
-                <View
-                    style={{
-                        //line
-                        width: '100%',
-                        height: 5,
-                        backgroundColor: 'black',
-                        marginTop: 5,
                     }}
-                />
+                    style={{
+                        backgroundColor: colors.primary,
+                        width: '30%',
+                        // alignSelf: 'center',
+                        alignItems: 'center',
+                        borderRadius: 7,
+                        // alignSelf: 'center',
+                        marginTop:10,
+                        height:30
+                       
 
+                    }}>
+                    <Text style={{
+                        padding: 5,
+                        color: 'white',
+                        fontSize: 12
+                    }}>Accept</Text>
+                </TouchableOpacity>
+
+
+
+            </View>
+
+
+
+            <View
+                style={{
+                    //line
+                    width: '100%',
+                    height: 5,
+                    backgroundColor: 'black',
+                    marginTop: 5,
+                }}
+            />
+
+            <View
+                style={{
+                    //description
+                    marginHorizontal: 10,
+                    marginTop: 10,
+                }}>
                 <View
                     style={{
-                        //description
-                        marginHorizontal: 10,
-                        marginTop: 10,
+                        flexDirection: 'row',
+                        // backgroundColor:'red',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                     }}>
-                    <View
+                    <Text
                         style={{
-                            flexDirection: 'row',
-                            // backgroundColor:'red',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            marginTop: 10,
+                            color: 'black',
                         }}>
-                        <Text
-                            style={{
-                                fontSize: 18,
-                                fontWeight: 'bold',
-                                marginTop: 10,
-                                color: 'black',
-                            }}>
-                            Description
-                        </Text>
-                    </View>
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginTop: 15,
-                            // backgroundColor:'red',
-                            marginBottom: 5,
-                        }}>
-                        <Image
-                            source={icons.icon_description}
-                            style={{
-                                width: 30,
-                                height: 30,
-                                marginRight: 20,
-                                marginTop: 5,
-                            }}
-                        />
-                        <FlatList
-                            data={description}
-                            // keyExtractor={item => item.id}
-                            keyExtractor={(item, index) => `key-${index}`}
-                            renderItem={({ item }) => <View
-                                style={{
-                                    marginBottom: 5
-                                }}>
-                                <Text>- {item}</Text>
-                            </View>}
-                        />
-                    </View>
+                        Description
+                    </Text>
                 </View>
 
                 <View
                     style={{
-                        //line
-                        width: '100%',
-                        height: 5,
-                        backgroundColor: 'black',
-                        marginTop: 5,
-                    }}
-                />
+                        flexDirection: 'row',
+                        marginTop: 15,
+                        // backgroundColor:'red',
+                        marginBottom: 5,
+                    }}>
+                    <Image
+                        source={icons.icon_description}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            marginRight: 20,
+                            marginTop: 5,
+                        }}
+                    />
+                    <FlatList
+                        data={description}
+                        // keyExtractor={item => item.id}
+                        keyExtractor={(item, index) => `key-${index}`}
+                        renderItem={({ item }) => <View
+                            style={{
+                                marginBottom: 5
+                            }}>
+                            <Text>- {item}</Text>
+                        </View>}
+                    />
+                </View>
+            </View>
 
+            <View
+                style={{
+                    //line
+                    width: '100%',
+                    height: 5,
+                    backgroundColor: 'black',
+                    marginTop: 5,
+                }}
+            />
+
+            <View
+                style={{
+                    //skills
+                    marginHorizontal: 10,
+                    marginTop: 10,
+                }}>
                 <View
                     style={{
-                        //skills
-                        marginHorizontal: 10,
-                        marginTop: 10,
+                        flexDirection: 'row',
+                        // backgroundColor:'red',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                     }}>
-                    <View
+                    <Text
                         style={{
-                            flexDirection: 'row',
-                            // backgroundColor:'red',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            marginTop: 10,
+                            color: 'black',
                         }}>
-                        <Text
-                            style={{
-                                fontSize: 18,
-                                fontWeight: 'bold',
-                                marginTop: 10,
-                                color: 'black',
-                            }}>
-                            Skills
-                        </Text>
-                    </View>
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginTop: 15,
-                            // backgroundColor:'red',
-                            marginBottom: 5,
-                        }}>
-                        <Image
-                            source={icons.icon_skills}
-                            style={{
-                                width: 30,
-                                height: 30,
-                                marginRight: 20,
-                                marginTop: 5,
-                            }}
-                        />
-                        <FlatList
-                            data={skills}
-                            // keyExtractor={item => item.id}
-                            keyExtractor={(item, index) => `key-${index}`}
-                            renderItem={({ item }) => <View
-                                style={{
-                                    marginBottom: 5
-                                }}>
-                                <Text>- {item}</Text>
-                            </View>}
-                        />
-                    </View>
+                        Skills
+                    </Text>
                 </View>
 
                 <View
                     style={{
-                        //line
-                        width: '100%',
-                        height: 5,
-                        backgroundColor: 'black',
-                        marginTop: 5,
-                    }}
-                />
+                        flexDirection: 'row',
+                        marginTop: 15,
+                        // backgroundColor:'red',
+                        marginBottom: 5,
+                    }}>
+                    <Image
+                        source={icons.icon_skills}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            marginRight: 20,
+                            marginTop: 5,
+                        }}
+                    />
+                    <FlatList
+                        data={skills}
+                        // keyExtractor={item => item.id}
+                        keyExtractor={(item, index) => `key-${index}`}
+                        renderItem={({ item }) => <View
+                            style={{
+                                marginBottom: 5
+                            }}>
+                            <Text>- {item}</Text>
+                        </View>}
+                    />
+                </View>
+            </View>
 
+            <View
+                style={{
+                    //line
+                    width: '100%',
+                    height: 5,
+                    backgroundColor: 'black',
+                    marginTop: 5,
+                }}
+            />
+
+            <View
+                style={{
+                    //education
+                    marginHorizontal: 10,
+                    marginTop: 10,
+                }}>
                 <View
                     style={{
-                        //education
-                        marginHorizontal: 10,
-                        marginTop: 10,
+                        flexDirection: 'row',
+                        // backgroundColor:'red',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                     }}>
-                    <View
+                    <Text
                         style={{
-                            flexDirection: 'row',
-                            // backgroundColor:'red',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            marginTop: 10,
+                            color: 'black',
                         }}>
-                        <Text
-                            style={{
-                                fontSize: 18,
-                                fontWeight: 'bold',
-                                marginTop: 10,
-                                color: 'black',
-                            }}>
-                            Education
-                        </Text>
-                    </View>
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginTop: 15,
-                            // backgroundColor:'red',
-                            marginBottom: 5,
-                        }}>
-                        <Image
-                            source={icons.icon_education}
-                            style={{
-                                width: 30,
-                                height: 30,
-                                marginRight: 20,
-                                marginTop: 5,
-                            }}
-                        />
-                        <FlatList
-                            data={education}
-                            // keyExtractor={item => item.id}
-                            keyExtractor={(item, index) => `key-${index}`}
-                            renderItem={({ item }) => <View
-                                style={{
-                                    marginBottom: 5
-                                }}>
-                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
-                                    {item.school_name}
-                                </Text>
-                                <Text>{item.field_of_study}</Text>
-                                <Text style={{ marginBottom: 5 }}>{formatDate(item.start_date)} - {formatDate(item.end_date)}</Text>
-                                <View style={{ width: '80%', height: 1, backgroundColor: colors.primary }} />
-                            </View>}
-                        />
-
-
-
-
-                    </View>
+                        Education
+                    </Text>
                 </View>
 
                 <View
                     style={{
-                        //line
-                        width: '100%',
-                        height: 5,
-                        backgroundColor: 'black',
-                        marginTop: 5,
-                    }}
-                />
-                <View
-                    style={{
-                        //experience
-                        marginHorizontal: 10,
-                        marginTop: 10,
+                        flexDirection: 'row',
+                        marginTop: 15,
+                        // backgroundColor:'red',
+                        marginBottom: 5,
                     }}>
-                    <View
+                    <Image
+                        source={icons.icon_education}
                         style={{
-                            flexDirection: 'row',
-                            // backgroundColor:'red',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                        }}>
-                        <Text
+                            width: 30,
+                            height: 30,
+                            marginRight: 20,
+                            marginTop: 5,
+                        }}
+                    />
+                    <FlatList
+                        data={education}
+                        // keyExtractor={item => item.id}
+                        keyExtractor={(item, index) => `key-${index}`}
+                        renderItem={({ item }) => <View
                             style={{
-                                fontSize: 18,
-                                fontWeight: 'bold',
-                                marginTop: 10,
-                                color: 'black',
+                                marginBottom: 5
                             }}>
-                            Experience
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginTop: 15,
-                            // backgroundColor:'red',
-                            marginBottom: 5,
-                        }}>
-                        <Image
-                            source={icons.icon_experience}
-                            style={{
-                                width: 30,
-                                height: 30,
-                                marginRight: 20,
-                                marginTop: 5,
-                            }}
-                        />
-                        <FlatList
-                            data={experience}
-                            keyExtractor={item => item.id}
-                            renderItem={({ item }) => <View
-                                style={{
-                                    marginBottom: 5
-                                }}>
-                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
-                                    {item.company_name}
-                                </Text>
-                                <Text>{item.title}</Text>
-                                <Text style={{ marginBottom: 5 }}>{formatDate(item.start_date)} - {formatDate(item.end_date)}</Text>
-                                <View style={{ width: '70%', height: 1, backgroundColor: colors.primary }} />
-                            </View>}
-                        />
+                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                                {item.school_name}
+                            </Text>
+                            <Text>{item.field_of_study}</Text>
+                            <Text style={{ marginBottom: 5 }}>{formatDate(item.start_date)} - {formatDate(item.end_date)}</Text>
+                            <View style={{ width: '80%', height: 1, backgroundColor: colors.primary }} />
+                        </View>}
+                    />
 
-                    </View>
+
+
+
                 </View>
+            </View>
 
+            <View
+                style={{
+                    //line
+                    width: '100%',
+                    height: 5,
+                    backgroundColor: 'black',
+                    marginTop: 5,
+                }}
+            />
+            <View
+                style={{
+                    //experience
+                    marginHorizontal: 10,
+                    marginTop: 10,
+                }}>
                 <View
                     style={{
-                        //line
-                        width: '100%',
-                        height: 5,
-                        backgroundColor: 'black',
-                        marginTop: 5,
-                    }}
-                />
-
-                <View
-                    style={{
-                        //education
-                        marginHorizontal: 10,
-                        marginTop: 10,
+                        flexDirection: 'row',
+                        // backgroundColor:'red',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                     }}>
-                    <View
+                    <Text
                         style={{
-                            flexDirection: 'row',
-                            // backgroundColor:'red',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            marginTop: 10,
+                            color: 'black',
                         }}>
-                        <Text
-                            style={{
-                                fontSize: 18,
-                                fontWeight: 'bold',
-                                marginTop: 10,
-                                color: 'black',
-                            }}>
-                            Certificate
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginTop: 15,
-                            // backgroundColor:'red',
-                            marginBottom: 10,
-                        }}>
-                        <Image
-                            source={icons.icon_certificate}
-                            style={{
-                                width: 30,
-                                height: 30,
-                                marginRight: 20,
-                                marginTop: 5,
-                            }}
-                        />
-                        <FlatList
-                            data={certificate}
-                            keyExtractor={item => item.id}
-                            renderItem={({ item }) => <View
-                                style={{
-                                    marginBottom: 5
-                                }}>
-                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
-                                    {item.name}
-                                </Text>
-                                <Text>{item.issue_organization}</Text>
-                                <Text style={{ marginBottom: 5 }}>{item.issue_date}</Text>
-                                <View style={{ width: '70%', height: 1, backgroundColor: colors.primary }} />
-                            </View>}
-                        />
-                    </View>
+                        Experience
+                    </Text>
                 </View>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        marginTop: 15,
+                        // backgroundColor:'red',
+                        marginBottom: 5,
+                    }}>
+                    <Image
+                        source={icons.icon_experience}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            marginRight: 20,
+                            marginTop: 5,
+                        }}
+                    />
+                    <FlatList
+                        data={experience}
+                        keyExtractor={item => item.id}
+                        renderItem={({ item }) => <View
+                            style={{
+                                marginBottom: 5
+                            }}>
+                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                                {item.company_name}
+                            </Text>
+                            <Text>{item.title}</Text>
+                            <Text style={{ marginBottom: 5 }}>{formatDate(item.start_date)} - {formatDate(item.end_date)}</Text>
+                            <View style={{ width: '70%', height: 1, backgroundColor: colors.primary }} />
+                        </View>}
+                    />
+
+                </View>
+            </View>
+
+            <View
+                style={{
+                    //line
+                    width: '100%',
+                    height: 5,
+                    backgroundColor: 'black',
+                    marginTop: 5,
+                }}
+            />
+
+            <View
+                style={{
+                    //education
+                    marginHorizontal: 10,
+                    marginTop: 10,
+                }}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        // backgroundColor:'red',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            marginTop: 10,
+                            color: 'black',
+                        }}>
+                        Certificate
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        marginTop: 15,
+                        // backgroundColor:'red',
+                        marginBottom: 10,
+                    }}>
+                    <Image
+                        source={icons.icon_certificate}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            marginRight: 20,
+                            marginTop: 5,
+                        }}
+                    />
+                    <FlatList
+                        data={certificate}
+                        keyExtractor={item => item.id}
+                        renderItem={({ item }) => <View
+                            style={{
+                                marginBottom: 5
+                            }}>
+                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                                {item.name}
+                            </Text>
+                            <Text>{item.issue_organization}</Text>
+                            <Text style={{ marginBottom: 5 }}>{item.issue_date}</Text>
+                            <View style={{ width: '70%', height: 1, backgroundColor: colors.primary }} />
+                        </View>}
+                    />
+                </View>
+            </View>
         </ScrollView>
     );
 };

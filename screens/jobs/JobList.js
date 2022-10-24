@@ -25,9 +25,10 @@ const JobList = ({ navigation }) => {
     //data job
     useEffect(() => {
         getListCompany()
+        getAllJobs()
     }, [])
 
-    //job
+    //company
     const [company, setCompany] = useState([])
     const getListCompany = async () => {
         try {
@@ -63,6 +64,41 @@ const JobList = ({ navigation }) => {
             throw error
         }
     };
+
+        //job
+        const [allJob, setAllJob] = useState([])
+        const getAllJobs = async () => {
+            try {
+                const dataToken = await AsyncStorage.getItem('access');
+                axios
+                    .get(
+                        'https://spiderpig83.pythonanywhere.com/api/v1/jobs',
+                        {
+                            headers: { Authorization: `Bearer ${dataToken}` },
+                        }, {
+                        "headers": {
+                            'Content-Type': 'application/json',
+                        }
+                    }
+                    )
+                    .then(res => {
+                        if (res.status != 200) {
+                            throw "Fail request"
+                        } else {
+                            let resJob = res.data.jobs
+                            setAllJob(resJob)
+                            // debugger
+                           
+                        }
+                    })
+                    .catch(e => {
+                        console.log(`get error error ${e}`);
+                    });
+            } catch (error) {
+                // debugger
+                throw error
+            }
+        };
 
     return (
 
@@ -121,26 +157,19 @@ const JobList = ({ navigation }) => {
                 boxStyles={{
                     // backgroundColor: colors.inactive,
                     marginHorizontal: 12,
-
-
                     borderRadius: 5,
-
-
                 }}
                 inputStyles={{
-
                 }}
                 dropdownStyles={{
                     // backgroundColor: colors.inactive,
                     marginHorizontal: 10
                 }}
-
-
                 setSelected={setSelected} data={data} />
 
             <View style={{
                 backgroundColor: colors.inactive,
-                height: 20,
+                height: 10,
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: 10

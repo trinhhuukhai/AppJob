@@ -17,13 +17,16 @@ import SaveJobItem from "./saveJob/SaveJobItem";
 import ApplyJob from "./applyJob/ApplyJob";
 import ApplyJobItem from "./applyJob/ApplyJobItem";
 
-import CreateJob from "./recruiter/job/CreateJob";
+import CreateJob from "./recruiter/company/CreateJob";
 import ListJob from "./recruiter/job/ListJob";
 import ListjobItem from "./recruiter/job/ListjobItem";
 import ProfileCandidate from "./recruiter/profileCandidate/ProfileCandidate";
 import ProfileCandidateDetails from "./recruiter/profileCandidate/ProfileCandidateDetails";
 import ProfileRecuiter from "./recruiter/profileRecruiter/ProfileRecuiter";
 import ViewProfileUser from "./recruiter/job/ViewProfileUser";
+import Company from "./recruiter/company/Company";
+import Setting from "./Setting";
+import CreateCompany from "./recruiter/company/CreateCompany";
 
 
 
@@ -53,5 +56,8 @@ export{
     ProfileCandidate,
     ProfileCandidateDetails,
     ProfileRecuiter,
-    ViewProfileUser
+    ViewProfileUser,
+    Company,
+    Setting,
+    CreateCompany
 }

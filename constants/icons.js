@@ -41,6 +41,8 @@ export default{
 
     icon_description: require('../assets/description.png'),
     icon_skills: require('../assets/skills.png'),
+    icon_setting_logout: require('../assets/settings_logout.png'),
+    icon_company: require('../assets/company.png'),
 
 
 

@@ -129,6 +129,7 @@ function ApplyJob({ navigation }, props) {
                             fontSize: 12
                         }}>Xem chi tiet</Text>
                     </TouchableOpacity>
+                    <Text>Trang thai: {item.status}</Text>
                     <Text>{item.id}</Text>
 
 

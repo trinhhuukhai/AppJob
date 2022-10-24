@@ -30,10 +30,10 @@ function ListjobItem({ navigation }, props) {
     const getListCompany = async () => {
         try {
             const dataToken = await AsyncStorage.getItem('access');
-            const companyId = await AsyncStorage.getItem('JobId');
+            const jobID = await AsyncStorage.getItem('JobId');
             axios
                 .get(
-                    `https://spiderpig83.pythonanywhere.com/api/v1/jobs/${companyId}/applied`,
+                    `https://spiderpig83.pythonanywhere.com/api/v1/jobs/${jobID}/applied`,
                     {
                         headers: { Authorization: `Bearer ${dataToken}` },
                     }, {
@@ -92,6 +92,7 @@ function ListjobItem({ navigation }, props) {
                     // height:100,
                     // backgroundColor:'red'
                 }}>
+                <Text>ID_jobApply: {item.id}</Text>
                     <Text style={{
                         fontSize:14,
                         marginBottom:10
@@ -102,6 +103,7 @@ function ListjobItem({ navigation }, props) {
                         onPress={() => {
                             // alert('xem chi tiet')
                             AsyncStorage.setItem("UserId", item.user_id)
+                            AsyncStorage.setItem("IdJobApply", item.id)
                             navigation.navigate('ViewProfileUser')
 
                         }}
@@ -122,6 +124,7 @@ function ListjobItem({ navigation }, props) {
                             fontSize: 12
                         }}>Xem Profile</Text>
                     </TouchableOpacity>
+                    <Text>Status: {item.status}</Text>
                     <View style={{
                         width:'100%',
                         height:1,
