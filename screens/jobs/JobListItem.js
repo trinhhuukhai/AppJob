@@ -284,8 +284,9 @@ const JobListItem = ({ navigation }, props) => {
                 marginRight: 2
               }}>
                 {item.skills.map((ski) =>
-                  <Text style={{
+                  <Text key={ski.id} style={{
                     // backgroundColor:'red',
+                    
                     borderWidth: 1,
                     borderColor: colors.primary,
                     padding: 3,

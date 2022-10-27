@@ -121,6 +121,7 @@ const JobDetail = () => {
                     }
                 },)
                 .then(res => {
+                    alert('Save khong thanh cong')
 
                 })
                 .catch(e => {
@@ -151,6 +152,7 @@ const JobDetail = () => {
                     }
                 },)
                 .then(res => {
+                    alert('Apply thanh cong')
 
                 })
                 .catch(e => {
@@ -297,7 +299,7 @@ const JobDetail = () => {
                         renderItem={({ item }) => <View style={{
                             marginLeft: 10
                         }}>
-                            <Text style={{
+                            <Text key={item.id}  style={{
                                 marginTop: 10
                             }}>- {item}</Text>
                         </View>}
@@ -322,10 +324,10 @@ const JobDetail = () => {
                     <FlatList
                         data={jobRequirement}
                         keyExtractor={item => item.id}
-                        renderItem={({ item }) => <View style={{
+                        renderItem={({ item }) => <View  style={{
                             marginLeft: 10
                         }}>
-                            <Text style={{
+                            <Text key={item.id} style={{
                                 marginTop: 10
                             }}>- {item}</Text>
                         </View>}
@@ -352,7 +354,7 @@ const JobDetail = () => {
                         renderItem={({ item }) => <View style={{
                             marginLeft: 10
                         }}>
-                            <Text style={{
+                            <Text key={item.id} style={{
                                 marginTop: 10
                             }}>- {item}</Text>
                         </View>}

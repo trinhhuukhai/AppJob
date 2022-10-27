@@ -18,14 +18,11 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const JobList = ({ navigation }) => {
-    const [selected, setSelected] = React.useState("");
-
-    const data = [{ key: '1', value: 'City' }];
 
     //data job
     useEffect(() => {
         getListCompany()
-        getAllJobs()
+        // getAllJobs()
     }, [])
 
     //company
@@ -50,8 +47,8 @@ const JobList = ({ navigation }) => {
                     } else {
                         let resJob = res.data.companies
                         setCompany(resJob)
-                        // debugger
-                       
+                     
+
 
 
                     }
@@ -65,40 +62,45 @@ const JobList = ({ navigation }) => {
         }
     };
 
-        //job
-        const [allJob, setAllJob] = useState([])
-        const getAllJobs = async () => {
-            try {
-                const dataToken = await AsyncStorage.getItem('access');
-                axios
-                    .get(
-                        'https://spiderpig83.pythonanywhere.com/api/v1/jobs',
-                        {
-                            headers: { Authorization: `Bearer ${dataToken}` },
-                        }, {
-                        "headers": {
-                            'Content-Type': 'application/json',
-                        }
+    const [city, setCity] = useState([])
+    // const [companyId, setCompanyId] = useState('')
+
+
+    //job
+    const [allJob, setAllJob] = useState([])
+    const getAllJobs = async () => {
+        try {
+            const dataToken = await AsyncStorage.getItem('access');
+            axios
+                .get(
+                    'https://spiderpig83.pythonanywhere.com/api/v1/self/jobs/suggest',
+                    {
+                        headers: { Authorization: `Bearer ${dataToken}` },
+                    }, {
+                    "headers": {
+                        'Content-Type': 'application/json',
                     }
-                    )
-                    .then(res => {
-                        if (res.status != 200) {
-                            throw "Fail request"
-                        } else {
-                            let resJob = res.data.jobs
-                            setAllJob(resJob)
-                            // debugger
-                           
-                        }
-                    })
-                    .catch(e => {
-                        console.log(`get error error ${e}`);
-                    });
-            } catch (error) {
-                // debugger
-                throw error
-            }
-        };
+                }
+                )
+                .then(res => {
+                    if (res.status != 200) {
+                        throw "Fail request"
+                    } else {
+                        let resJob = res.data.jobs
+                        setAllJob(resJob)
+                        // AsyncStorage.setItem("IdCity", item.city_id)
+                        debugger
+
+                    }
+                })
+                .catch(e => {
+                    console.log(`get error error ${e}`);
+                });
+        } catch (error) {
+            // debugger
+            throw error
+        }
+    };
 
     return (
 
@@ -152,20 +154,6 @@ const JobList = ({ navigation }) => {
                 />
 
             </View>
-            <SelectList
-
-                boxStyles={{
-                    // backgroundColor: colors.inactive,
-                    marginHorizontal: 12,
-                    borderRadius: 5,
-                }}
-                inputStyles={{
-                }}
-                dropdownStyles={{
-                    // backgroundColor: colors.inactive,
-                    marginHorizontal: 10
-                }}
-                setSelected={setSelected} data={data} />
 
             <View style={{
                 backgroundColor: colors.inactive,
@@ -173,8 +161,7 @@ const JobList = ({ navigation }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: 10
-            }}>
-            </View>
+            }} />
 
             <FlatList
                 data={company}
@@ -200,7 +187,6 @@ const JobList = ({ navigation }) => {
                         marginTop: 20,
                         marginBottom: 10
                     }}>{item.name}</Text>
-                    <Text>{item.id}</Text>
                     <View style={{
                         flexDirection: 'row',
                         marginTop: 5
@@ -210,7 +196,7 @@ const JobList = ({ navigation }) => {
                             onPress={() => {
                                 AsyncStorage.setItem("companyId", item.id)
                                 AsyncStorage.setItem("companyName", item.name)
-                                AsyncStorage.setItem("IdCity", item.city_id)
+
                                 navigation.navigate("JobListItem")
                             }
                             }

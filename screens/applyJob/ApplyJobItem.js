@@ -163,9 +163,9 @@ const ApplyJobItem = () => {
 
             <View style={{
                 width: '100%',
-                height: 10,
+                height: 5,
                 backgroundColor: 'gray',
-                marginTop: 20
+                marginTop: 10
             }} />
             <View style={{
                 flexDirection: 'row',

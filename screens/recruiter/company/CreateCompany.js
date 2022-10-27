@@ -19,7 +19,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-function CreateCompany({ navigation }, props) {
+function CreateCompany({ navigation }, props) {zz
 
   const [city, setCity] = useState("")
   const [nameC, setNameC] = useState("")
@@ -97,7 +97,7 @@ function CreateCompany({ navigation }, props) {
         },)
         .then(res => {
           console.log('them thanh cong')
-          debugger
+          // debugger
 
         })
         .catch(e => {

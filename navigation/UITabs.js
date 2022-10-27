@@ -6,7 +6,7 @@
  * yarn add @react-navigation/native-stack
  */
 import React, { useState, useEffect } from 'react'
-import { Profile, ProfileCandidateDetails, ProfileRecuiter, Company, Setting, CreateCompany, ProductGridView, ViewProfileUser, FoodList, JobList, JobListItem, JobDetail, FormCertificate, FormEducation, FormExperience, SaveJob, SaveJobItem, ApplyJob, ApplyJobItem, ListJob, ListjobItem, ProfileCandidate, CreateJob } from '../screens'
+import { Profile, ProfileCandidateDetails, ProfileRecuiter,FormProfile, Company, Setting, CreateCompany, ProductGridView, ViewProfileUser, FoodList, JobList, JobListItem, JobDetail, FormCertificate, FormEducation, FormExperience, SaveJob, SaveJobItem, ApplyJob, ApplyJobItem, ListJob, ListjobItem, ProfileCandidate, CreateJob } from '../screens'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
@@ -42,11 +42,11 @@ const screenOptions = ({ route }) => ({
     let iconName = icons.icon_profile
     if (screenName == "Job") {
       iconName = icons.icon_find_job
-    } else if (screenName == "SaveJob") {
+    } else if (screenName == "Saved") {
       iconName = icons.icon_job_save
-    } else if (screenName == "ApplyJob") {
+    } else if (screenName == "Applied") {
       iconName = icons.icon_job_apply
-    } else if (screenName == "Profile") {
+    } else if (screenName == "Profiles") {
       iconName = icons.icon_profile_white
     }
     else if (screenName == "JobRecuiterStack") {
@@ -79,7 +79,7 @@ const screenOptions = ({ route }) => ({
 
 
 const StackJob = createNativeStackNavigator()
-function JobStack() {
+function Job() {
   return (
     <StackJob.Navigator screenOptions={{ headerShown: true }}>
       <StackJob.Screen name={"JobList"} component={JobList} />
@@ -90,13 +90,14 @@ function JobStack() {
 }
 
 const StackProfile = createNativeStackNavigator()
-function ProfileStack() {
+function Profilles() {
   return (
     <StackProfile.Navigator screenOptions={{ headerShown: true }}>
       <StackProfile.Screen name={"Profile"} component={Profile} />
       <StackProfile.Screen name={"FormCertificate"} component={FormCertificate} />
       <StackProfile.Screen name={"FormEducation"} component={FormEducation} />
       <StackProfile.Screen name={"FormExperience"} component={FormExperience} />
+      <StackProfile.Screen name={"FormProfile"} component={FormProfile} />
 
     </StackProfile.Navigator>
   )
@@ -150,7 +151,7 @@ function CandidateStack() {
 }
 
 const StackSavedJob = createNativeStackNavigator()
-function SavedJobStack() {
+function Saved() {
   return (
     <StackSavedJob.Navigator screenOptions={{ headerShown: true }}>
       <StackSavedJob.Screen name={"SaveJob"} component={SaveJob} />
@@ -160,7 +161,7 @@ function SavedJobStack() {
 }
 
 const StackApplyJob = createNativeStackNavigator()
-function AplliedJobStack() {
+function Applied() {
   return (
     <StackApplyJob.Navigator screenOptions={{ headerShown: true }}>
       <StackApplyJob.Screen name={"ApplyJob"} component={ApplyJob} />
@@ -203,11 +204,15 @@ function UITabs(props) {
 
 
   return (<>
+
+  {/* <View><Text>Token: {access}</Text>
+  <Text>{role}</Text>
+  </View> */}
     {role === "candidate" ? <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name={"Job"} component={JobStack} />
-      <Tab.Screen name={"SaveJob"} component={SavedJobStack} />
-      <Tab.Screen name={"ApplyJob"} component={AplliedJobStack} />
-      <Tab.Screen name={"Profile"} component={ProfileStack} />
+      <Tab.Screen name={"Job"} component={Job} />
+      <Tab.Screen name={"Saved"} component={Saved} />
+      <Tab.Screen name={"Applied"} component={Applied} />
+      <Tab.Screen name={"Profiles"} component={Profilles} />
       <Tab.Screen name={"Setting"} component={Setting} />
 
     </Tab.Navigator>
@@ -215,7 +220,6 @@ function UITabs(props) {
       <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen name={"CompanyStack"} component={CompanyStack} />
         <Tab.Screen name={"JobRecuiterStack"} component={JobRecuiterStack} />
-
         <Tab.Screen name={"ProfileRecuiter"} component={ProfileRecuiter} />
         <Tab.Screen name={"Setting"} component={Setting} />
 

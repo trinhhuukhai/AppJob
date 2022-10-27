@@ -56,12 +56,14 @@ function Login(props) {
             setData(access)
             //save access to storage
             AsyncStorage.setItem("access", access)
+            alert('Đăng nhập thành công')
     
             //redriac
             navigate('Welcome')
           })
           .catch(e => {
             console.log(`login error ${e}`);
+            alert('Đăng nhập không thành công!!!')
             
           });
       };
@@ -206,17 +208,13 @@ function Login(props) {
                     disabled = {validOk() == false}
                     onPress={() => {
                         login(email, password)
-                        alert('dang nhap thanh cong')
                     }}
                     style={{
                         backgroundColor: validOk() ==true ? colors.primary :'gray',
-                        // justifyContent:'center',
-                        // alignItems:'center',
                         width: '60%',
                         alignSelf: 'center',
                         alignItems: 'center',
                         borderRadius: 15
-                        // marginHorizontal:50 //can chinh le 2 ben theo chieu doc
                     }}>
                     <Text style={{
                         padding: 10,
@@ -224,17 +222,6 @@ function Login(props) {
                         fontSize: 14
                     }}>LOGIN</Text>
                 </TouchableOpacity>
-                {/* <TouchableOpacity
-                onPress={() =>{
-                    // getRole()
-
-                }}>
-                    <Text style={{
-                        textAlign:"center",
-                        marginTop:20,
-                        fontWeight:'bold'
-                    }}>GetData</Text>
-                </TouchableOpacity> */}
                 <TouchableOpacity
                     onPress={() => {
                         navigate('Register')
@@ -251,51 +238,6 @@ function Login(props) {
                 </TouchableOpacity>
             </View>
             }
-
-            {/* <View style={{
-                flex: 25,
-                // backgroundColor:"purple"
-            }}>
-                <View style={{
-                    height: 40,
-                    alignItems: 'center',
-                    marginHorizontal: 20,
-                    flexDirection: 'row' //tu trai sang phai, hang ngang
-                }}>
-                    <View style={{
-                        backgroundColor: 'black',
-                        height: 1,
-                        flex: 1
-                    }}></View>
-                    <Text style={{
-                        padding: 10,
-                        color: 'black',
-                        fontSize: 14,
-                        alignSelf: 'center',
-                        marginHorizontal: 5
-                    }}>User other method?</Text>
-                    <View style={{
-                        backgroundColor: 'black',
-                        height: 1,
-                        flex: 1
-                    }}></View>
-                </View>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center'
-                }}>
-                    <Image source={icons.icon_facebook} style={{
-                        width: 35,
-                        height: 35
-                    }}></Image>
-                    <View style={{ width: 15 }} />
-                    <Image source={icons.icon_google_plus} style={{
-                        width: 35,
-                        height: 35
-                    }}></Image>
-                </View>
-            </View> */}
-
         </KeyboardAvoidingView>
     );
 }

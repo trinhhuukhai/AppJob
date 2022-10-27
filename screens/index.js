@@ -27,6 +27,7 @@ import ViewProfileUser from "./recruiter/job/ViewProfileUser";
 import Company from "./recruiter/company/Company";
 import Setting from "./Setting";
 import CreateCompany from "./recruiter/company/CreateCompany";
+import FormProfile from "./profile/FormProfile";
 
 
 
@@ -59,5 +60,6 @@ export{
     ViewProfileUser,
     Company,
     Setting,
-    CreateCompany
+    CreateCompany,
+    FormProfile
 }

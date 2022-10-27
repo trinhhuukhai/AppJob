@@ -53,7 +53,7 @@ const FormEducation = ({ navigation }) => {
                 },)
                 .then(res => {
                     console.log('them thanh cong')
-                    debugger
+                
 
                 })
                 .catch(e => {

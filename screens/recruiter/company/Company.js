@@ -23,12 +23,11 @@ function Company({ navigation }, props) {
     //data job
     useEffect(() => {
         getListJob()
-        
-
     }, [])
 
     //job
     const [selfCompany, setSelfCompany] = useState([])
+    const [flag, setFlag] = useState('')
 
     const { name, logo, business_size_min, business_size_max, id } = selfCompany
 
@@ -50,17 +49,20 @@ function Company({ navigation }, props) {
                     if (res.status != 200) {
                         throw "Fail request"
                     } else {
-                        
-                        let infoCompany = res.data
-
-                        AsyncStorage.setItem("idCompany", infoCompany.id)
                         // debugger
+                        let infoCompany = res.data
+                        
+                        AsyncStorage.setItem("idCompany", infoCompany.id)
+                       
                         setSelfCompany(infoCompany)
                         
                     }
                 })
                 .catch(e => {
-                    console.log(`get error error ${e}`);
+                    let abc = false
+                    setFlag(abc)
+                    // debugger
+                    console.log(`get company error ${e}`);
                 });
         } catch (error) {
             // debugger
@@ -72,7 +74,7 @@ function Company({ navigation }, props) {
 
 
     return <View style={{ flex: 1, backgroundColor: 'white', paddingVertical: 30 }}>
-        {id !== null ?
+        {flag !== false ?
             <View>
                 <View style={{
                     padding: 10,
@@ -83,7 +85,7 @@ function Company({ navigation }, props) {
                         color: 'black',
                         fontSize: 20,
 
-                    }}>Company Information</Text>
+                    }}>Company</Text>
                     <TouchableOpacity
                         onPress={() => {
                             // alert('xem chi tiet')
@@ -96,7 +98,7 @@ function Company({ navigation }, props) {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                        <Text>Create Job</Text>
+                        <Text>Create New Job</Text>
                         <Image source={icons.icon_edit} style={{
                             width: 30,
                             height: 30,

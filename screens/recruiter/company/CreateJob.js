@@ -154,7 +154,7 @@ function CreateJob({ navigation }, props) {
         },)
         .then(res => {
           console.log('them thanh cong')
-          debugger
+          // debugger
 
         })
         .catch(e => {

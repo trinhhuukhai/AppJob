@@ -78,13 +78,14 @@ const ProfileRecuiter = () => {
                 }} />
                 <View style={{
                     marginHorizontal: 10,
-                    alignItems:'center'
+                    // alignItems:'center'
+                    marginLeft:40
                 }}>
                     <Image source={images.profile_user} style={{
                         width: 100,
                         height: 100,
                         borderRadius: 100,
-                        marginTop: -50
+                        marginTop: -60
                     }} />
                     <Text style={{
                         fontSize: 18,

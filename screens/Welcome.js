@@ -28,11 +28,8 @@ function Welcome(props) {
         const dataToken = await AsyncStorage.getItem('access');
 
         if (!dataToken) {
-            s
             navigation.replace('Login');
-        } else {
-
-            
+        } else {    
         axios
         .get(
             'https://spiderpig83.pythonanywhere.com/api/v1/self/info',
@@ -66,15 +63,15 @@ function Welcome(props) {
     //like getter, setter [lay gia tri, thay doi]
     const [accountTypes, setAccountTypes] = useState([
         {
-            name: 'Influencer',
+            name: 'Student',
             isSelected: true,
         },
         {
-            name: 'Business',
+            name: 'Job Seekers',
             isSelected: false,
         },
         {
-            name: 'Individual',
+            name: 'Recruiter',
             isSelected: false,
         }
     ])
@@ -120,7 +117,7 @@ function Welcome(props) {
                                 height: 30,
                             }}
                         />
-                        <Text style={{ color: 'white' }}>YOURCOMPANY.CO</Text>
+                        <Text style={{ color: 'white' }}>FINDFOB.CO</Text>
                         <View style={{ flex: 1 }} />
                         <Image
                             source={icons.icon_question}
@@ -143,10 +140,7 @@ function Welcome(props) {
                     }}>
                     <Text style={{ marginBottom: 7, color: 'white' }}>Welcome to</Text>
                     <Text style={{ marginBottom: 7, color: 'white', fontWeight: 'bold' }}>
-                        YOURCOMPANY.CO
-                    </Text>
-                    <Text style={{ marginBottom: 7, color: 'white' }}>
-                        Please select your account type
+                        FINDJOB.CO
                     </Text>
                 </View>
                 <View

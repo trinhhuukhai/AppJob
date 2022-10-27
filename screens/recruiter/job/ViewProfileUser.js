@@ -37,7 +37,7 @@ function ViewProfileUser({ navigation }, props) {
             axios
                 .put(`https://spiderpig83.pythonanywhere.com/api/v1/job/applied/${id}`,
                     {
-                        status:"Accepted"
+                        status: "Accepted"
                     }, {
                     "headers": {
                         'Authorization': `Bearer ${dataToken}`,
@@ -180,13 +180,15 @@ function ViewProfileUser({ navigation }, props) {
                 }}
             />
             <View style={{
-                flexDirection:'row',
-                justifyContent:'space-around'
+                flexDirection: 'row',
+                // justifyContent: 'space-between'
             }}>
                 <View
                     style={{
                         // alignItems: 'center',
                         // paddingStart: 20
+                        // marginHorizontal: 30
+                        marginLeft:10
                     }}>
                     <Image
                         source={images.profile_user}
@@ -208,38 +210,34 @@ function ViewProfileUser({ navigation }, props) {
                     </Text>
                     <Text
                         style={{
-                            fontSize: 18,
-                            fontWeight: 'bold',
+
                             marginTop: 10,
                             color: 'black',
                         }}>
-                        {dob}
+                        Date of birth: {dob}
                     </Text>
                     <Text
                         style={{
-                            fontSize: 18,
-                            fontWeight: 'bold',
+
+
                             marginTop: 10,
                             color: 'black',
                         }}>
-                        {phone}
+                        Phone Number: {phone}
                     </Text>
                     <Text
                         style={{
-                            fontSize: 18,
-                            fontWeight: 'bold',
                             marginTop: 10,
                             color: 'black',
                         }}>
-                        {gender}
+                        Gender: {gender}
                     </Text>
                     <Text
                         style={{
-                            fontSize: 14,
                             color: 'black',
                             marginTop: 5,
                         }}>
-                        {location}
+                        Address: {location}
                     </Text>
                 </View>
                 <TouchableOpacity
@@ -250,14 +248,15 @@ function ViewProfileUser({ navigation }, props) {
                     }}
                     style={{
                         backgroundColor: colors.primary,
-                        width: '30%',
+                        width: 80,
                         // alignSelf: 'center',
+                        // marginLeft:-40,
                         alignItems: 'center',
                         borderRadius: 7,
                         // alignSelf: 'center',
-                        marginTop:10,
-                        height:30
-                       
+                        marginTop: 10,
+                        height: 30
+
 
                     }}>
                     <Text style={{

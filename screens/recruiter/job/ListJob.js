@@ -59,7 +59,10 @@ function ListJob({ navigation }, props) {
                     }
                 })
                 .catch(e => {
-                    console.log(`get jobs error ${e}`);
+                    // debugger
+                    let abc = false
+                    
+                    // console.log(`get jobs error ${e}`);
                 });
         } catch (error) {
             // debugger
@@ -67,7 +70,7 @@ function ListJob({ navigation }, props) {
         }
     };
 
-    return <View style={{ flex: 1, backgroundColor: 'white', paddingVertical: 30 }}>
+    return <View style={{ flex: 1, backgroundColor: 'white', paddingVertical: 20 }}>
 
         {
             totals === 0 ? <View><Text style={{
@@ -80,7 +83,7 @@ function ListJob({ navigation }, props) {
                     <View style={{
                         padding: 10,
                         flexDirection: 'row',
-                        justifyContent: 'space-between'
+                        justifyContent: 'center'
                     }}>
                         <Text style={{
                             color: 'black',
@@ -88,7 +91,8 @@ function ListJob({ navigation }, props) {
 
                         }}>Danh sach cong viec</Text>
 
-                        <TouchableOpacity style={{
+
+                        {/* <TouchableOpacity style={{
                             flexDirection: 'row',
                             alignItems: 'center'
                         }} onPress={() => navigation.navigate("CreateJob")}>
@@ -99,9 +103,14 @@ function ListJob({ navigation }, props) {
                                 tintColor: colors.primary,
                                 marginLeft: 10
                             }} />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                     </View>
+                    <View style={{
+                            width:'100%',
+                            height:5,
+                            backgroundColor:'gray'
+                        }} />
 
                     <FlatList
                         data={job}

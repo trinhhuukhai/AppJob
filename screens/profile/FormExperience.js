@@ -55,7 +55,7 @@ const FormExperience = ({ navigation }) => {
                 },)
                 .then(res => {
                     console.log('them thanh cong')
-                    debugger
+                  
 
                 })
                 .catch(e => {

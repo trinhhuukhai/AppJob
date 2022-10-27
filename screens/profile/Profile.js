@@ -26,12 +26,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Profile({ navigation }, props) {
 
-   
+
 
     useEffect(() => {
         getProfile()
         getUserDetail()
-        
+
     }, [])
 
     //user
@@ -149,7 +149,9 @@ function Profile({ navigation }, props) {
                     }}
                 />
                 <View style={{
-                    flexDirection: 'row'
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+
                 }}>
                     <View
                         style={{
@@ -169,39 +171,42 @@ function Profile({ navigation }, props) {
                                 fontSize: 18,
                                 fontWeight: 'bold',
                                 marginTop: 10,
+                                // marginLeft:10,
                                 color: 'black',
                             }}>
                             {userName}
                         </Text>
-                        {/* <Text style={{ color: 'black', marginBottom: 5, fontWeight: '500' }}>
-                            Software Engineer
-                        </Text> */}
-                        <Text style={{ color: 'black', marginBottom: 5 }}>
-                            {skills}
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 14,
-                                color: 'black',
-                                alignSelf: 'flex-start',
-                                // backgroundColor:'blue'
-                            }}>
-                            {JSON.stringify(description)}
-                        </Text>
+                        <Text style={{
+                            marginStart: 10
+                        }}>Skills:</Text>
+                        {skills?.map((item) => <View key={item} style={{
+                            flexDirection: 'row'
+                        }}><Text style={{ color: 'black', marginBottom: 2, marginLeft: 30 }}>
+                                - {item}
+                            </Text></View>)}
+                        <Text style={{
+                            marginStart: 10
+                        }}>Description:</Text>
+                        {description?.map((item) => <View key={item} style={{
+                            flexDirection: 'row'
+                        }}><Text style={{ color: 'black', marginBottom: 2, marginLeft: 30 }}>
+                                - {item}
+                            </Text></View>)}
                         <Text
                             style={{
                                 fontSize: 14,
                                 color: 'black',
                                 marginTop: 5,
                             }}>
-                            {location}
+                            Address: {location}
                         </Text>
                     </View>
                     <TouchableOpacity
                         style={{
                             marginTop: 10,
+                            marginRight: 10
                         }}
-                        onPress={() => navigation.navigate('FormExperience')}>
+                        onPress={() => navigation.navigate('FormProfile')}>
                         <Image
                             source={icons.icon_edit}
                             style={{
@@ -275,7 +280,7 @@ function Profile({ navigation }, props) {
                             }}
                         />
                         <FlatList
-                        // ref={}
+                            // ref={}
                             data={[...education]}
                             keyExtractor={item => item.id}
                             renderItem={({ item }) => <View
