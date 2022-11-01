@@ -16,7 +16,7 @@ import { images, icons, colors } from '../../constants/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const JobListItem = ({ navigation }, props) => {
+const CompanyListItem = ({ navigation }, props) => {
 
 
   // const [companyId, setCompanyId] = useState('')
@@ -53,11 +53,15 @@ const JobListItem = ({ navigation }, props) => {
   //job
   const [infoCompany, setInfoConpany] = useState([])
   // const [companyId, setCompanyId] = useState('')
+  const [token, setToken] = useState('')
+  const [cmpId, setCmpId] = useState('')
 
   const getInfoCompany = async () => {
     try {
       const dataToken = await AsyncStorage.getItem('access');
       const companyId = await AsyncStorage.getItem('companyId');
+      setToken(dataToken)
+      setCmpId(companyId)
       axios
         .get(
           `https://spiderpig83.pythonanywhere.com/api/v1/company/${companyId}`,
@@ -300,7 +304,7 @@ const JobListItem = ({ navigation }, props) => {
 
                 onPress={() => {
                   AsyncStorage.setItem("jobId", item.id)
-                  navigation.navigate('JobDetail')
+                  navigation.navigate('CompanyDetail')
                 }}
                 style={{
                   backgroundColor: colors.primary,
@@ -334,4 +338,4 @@ const JobListItem = ({ navigation }, props) => {
   )
 }
 
-export default JobListItem
+export default CompanyListItem

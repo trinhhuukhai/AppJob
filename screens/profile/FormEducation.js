@@ -33,7 +33,7 @@ const FormEducation = ({ navigation }) => {
     const [access, setAccess] = useState('')
 
 
-    const saveJob = async () => {
+    const saveEdu = async () => {
         try {
             const dataToken = await AsyncStorage.getItem('access');
             // debugger
@@ -159,7 +159,7 @@ const FormEducation = ({ navigation }) => {
                     <TouchableOpacity
 
                         onPress={() => {
-                            saveJob()
+                            saveEdu()
                             navigation.navigate('Profile')
                         }}
                         style={{

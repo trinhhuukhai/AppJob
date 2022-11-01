@@ -4,9 +4,9 @@ import Register from "./Register";
 import FoodList from "./food/FoodList";
 import Profile from "./profile/Profile";
 import ProductGridView from "./productGrid/ProductGridView";
-import JobList from "./jobs/JobList";
-import JobListItem from "./jobs/JobListItem";
-import JobDetail from "./jobs/JobDetail";
+import CompanyList from "./company/CompanyList";
+import CompanyListItem from "./company/CompanyListItem";
+import CompanyDetail from "./company/CompanyDetail";
 import FormCertificate from "./profile/FormCertificate";
 import FormEducation from "./profile/FormEducation";
 import FormExperience from "./profile/FormExperience";
@@ -29,6 +29,9 @@ import Setting from "./Setting";
 import CreateCompany from "./recruiter/company/CreateCompany";
 import FormProfile from "./profile/FormProfile";
 
+import ListJobCandidate from "./jobs/ListJobCandidate";
+import ListJobCandidateDetail from "./jobs/ListJobCandidateDetail";
+
 
 
 
@@ -41,9 +44,9 @@ export{
     FoodList,
     Profile,
     ProductGridView,
-    JobList,
-    JobListItem,
-    JobDetail,
+    CompanyList,
+    CompanyListItem,
+    CompanyDetail,
     FormCertificate,
     FormExperience,
     FormEducation,
@@ -61,5 +64,7 @@ export{
     Company,
     Setting,
     CreateCompany,
-    FormProfile
+    FormProfile,
+    ListJobCandidate,
+    ListJobCandidateDetail
 }

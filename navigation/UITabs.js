@@ -6,7 +6,7 @@
  * yarn add @react-navigation/native-stack
  */
 import React, { useState, useEffect } from 'react'
-import { Profile, ProfileCandidateDetails, ProfileRecuiter,FormProfile, Company, Setting, CreateCompany, ProductGridView, ViewProfileUser, FoodList, JobList, JobListItem, JobDetail, FormCertificate, FormEducation, FormExperience, SaveJob, SaveJobItem, ApplyJob, ApplyJobItem, ListJob, ListjobItem, ProfileCandidate, CreateJob } from '../screens'
+import { Profile, ProfileCandidateDetails, ProfileRecuiter, FormProfile, ListJobCandidate, ListJobCandidateDetail, Company, Setting, CreateCompany, ProductGridView, ViewProfileUser, FoodList, CompanyList, CompanyListItem, CompanyDetail, FormCertificate, FormEducation, FormExperience, SaveJob, SaveJobItem, ApplyJob, ApplyJobItem, ListJob, ListjobItem, ProfileCandidate, CreateJob } from '../screens'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
@@ -40,8 +40,8 @@ const screenOptions = ({ route }) => ({
 
     let screenName = route.name
     let iconName = icons.icon_profile
-    if (screenName == "Job") {
-      iconName = icons.icon_find_job
+    if (screenName == "Companys") {
+      iconName = icons.icon_company
     } else if (screenName == "Saved") {
       iconName = icons.icon_job_save
     } else if (screenName == "Applied") {
@@ -59,8 +59,10 @@ const screenOptions = ({ route }) => ({
       iconName = icons.icon_profile_white
     } else if (screenName == "Setting") {
       iconName = icons.icon_setting_logout
-    }else if (screenName == "CompanyStack") {
+    } else if (screenName == "CompanyStack") {
       iconName = icons.icon_company
+    } else if (screenName == "Jobs") {
+      iconName = icons.icon_find_job
     }
 
     return <Image
@@ -78,15 +80,24 @@ const screenOptions = ({ route }) => ({
 
 
 
-const StackJob = createNativeStackNavigator()
-function Job() {
+const StackCompanyC = createNativeStackNavigator()
+function Companys() {
   return (
-    <StackJob.Navigator screenOptions={{ headerShown: true }}>
-      <StackJob.Screen name={"JobList"} component={JobList} />
-      <StackJob.Screen name={"JobListItem"} component={JobListItem} />
-      <StackJob.Screen name={"JobDetail"} component={JobDetail} />
+    <StackCompanyC.Navigator screenOptions={{ headerShown: true }}>
+      <StackCompanyC.Screen name={"CompanyList"} component={CompanyList} />
+      <StackCompanyC.Screen name={"CompanyListItem"} component={CompanyListItem} />
+      <StackCompanyC.Screen name={"CompanyDetail"} component={CompanyDetail} />
 
-    </StackJob.Navigator>)
+    </StackCompanyC.Navigator>)
+}
+
+const StackJobC = createNativeStackNavigator()
+function Jobs() {
+  return (
+    <StackJobC.Navigator screenOptions={{ headerShown: true }}>
+      <StackJobC.Screen name={"ListJobCandidate"} component={ListJobCandidate} />
+      <StackJobC.Screen name={"ListJobCandidateDetail"} component={ListJobCandidateDetail} />
+    </StackJobC.Navigator>)
 }
 
 const StackProfile = createNativeStackNavigator()
@@ -205,15 +216,16 @@ function UITabs(props) {
 
   return (<>
 
-  {/* <View><Text>Token: {access}</Text>
+    {/* <View><Text>Token: {access}</Text>
   <Text>{role}</Text>
   </View> */}
     {role === "candidate" ? <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name={"Job"} component={Job} />
+      {/* <Tab.Screen name={"Jobs"} component={Jobs} />
+      <Tab.Screen name={"Companys"} component={Companys} />
       <Tab.Screen name={"Saved"} component={Saved} />
-      <Tab.Screen name={"Applied"} component={Applied} />
+      <Tab.Screen name={"Applied"} component={Applied} /> */}
       <Tab.Screen name={"Profiles"} component={Profilles} />
-      <Tab.Screen name={"Setting"} component={Setting} />
+      {/* <Tab.Screen name={"Setting"} component={Setting} /> */}
 
     </Tab.Navigator>
       :

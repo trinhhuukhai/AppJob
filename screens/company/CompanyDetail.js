@@ -20,7 +20,7 @@ import UiButton from '../../components';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const JobDetail = () => {
+const CompanyDetail = () => {
 
     const [id, setId] = useState('')
     //data job
@@ -30,13 +30,6 @@ const JobDetail = () => {
     }, [])
 
 
-    // const getJobiddd = async () =>{
-    //     const companyId = await AsyncStorage.getItem('jobId');
-    //     setId(companyId)
-    //     debugger
-
-    // }
-    //job
     const [jobInfo, setJobInfo] = useState([])
     const [jobName, setJobName] = useState([])
     const [location, setLocation] = useState([])
@@ -46,15 +39,20 @@ const JobDetail = () => {
     const [jobSkills, setJobSkills] = useState([])
     const [salaryMin, setSalaryMin] = useState([])
     const [salaryMax, setSalaryMax] = useState([])
+    const [token, setToken] = useState('')
+    const [jid, setJid] = useState('')
+
     const [jobId, setJobId] = useState('')
 
     const getListCompany = async () => {
         try {
             const dataToken = await AsyncStorage.getItem('access');
-            const companyId = await AsyncStorage.getItem('jobId');
+            const jobid = await AsyncStorage.getItem('jobId');
+            setToken(dataToken)
+            setJid(jobid)
             axios
                 .get(
-                    `https://spiderpig83.pythonanywhere.com/api/v1/job/${companyId}`,
+                    `https://spiderpig83.pythonanywhere.com/api/v1/job/${jobid}`,
                     {
                         headers: { Authorization: `Bearer ${dataToken}` },
                     }, {
@@ -107,16 +105,16 @@ const JobDetail = () => {
 
     const saveJob = async () => {
         try {
-            const dataToken = await AsyncStorage.getItem('access');
-            const jobId = await AsyncStorage.getItem('jobId');
+            // const dataToken = await AsyncStorage.getItem('access');
+            // const jobId = await AsyncStorage.getItem('jobId');
             // debugger
             axios
                 .post('https://spiderpig83.pythonanywhere.com/api/v1/self/jobs/saved',
                     {
-                        job_id: jobId
+                        job_id: jid
                     }, {
                     "headers": {
-                        'Authorization': `Bearer ${dataToken}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     }
                 },)
@@ -138,16 +136,16 @@ const JobDetail = () => {
 
     const ApplyJob = async () => {
         try {
-            const dataToken = await AsyncStorage.getItem('access');
-            const jobId = await AsyncStorage.getItem('jobId');
+            // const dataToken = await AsyncStorage.getItem('access');
+            // const jobId = await AsyncStorage.getItem('jobId');
             // debugger
             axios
                 .post('https://spiderpig83.pythonanywhere.com/api/v1/self/jobs/applied',
                     {
-                        job_id: jobId
+                        job_id: jid
                     }, {
                     "headers": {
-                        'Authorization': `Bearer ${dataToken}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     }
                 },)
@@ -401,4 +399,4 @@ const JobDetail = () => {
     )
 }
 
-export default JobDetail
+export default CompanyDetail

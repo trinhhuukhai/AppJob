@@ -17,19 +17,21 @@ import SelectList from 'react-native-dropdown-select-list'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const JobList = ({ navigation }) => {
+const CompanyList = ({ navigation }) => {
 
     //data job
     useEffect(() => {
         getListCompany()
-        // getAllJobs()
     }, [])
 
     //company
+    const [token, setToken] = useState('')
     const [company, setCompany] = useState([])
     const getListCompany = async () => {
         try {
             const dataToken = await AsyncStorage.getItem('access');
+            // debugger
+            setToken(dataToken)
             axios
                 .get(
                     'https://spiderpig83.pythonanywhere.com/api/v1/companies',
@@ -68,14 +70,14 @@ const JobList = ({ navigation }) => {
 
     //job
     const [allJob, setAllJob] = useState([])
-    const getAllJobs = async () => {
+    const getAllJobs =() => {
         try {
-            const dataToken = await AsyncStorage.getItem('access');
+            // const dataToken = await AsyncStorage.getItem('access');
             axios
                 .get(
                     'https://spiderpig83.pythonanywhere.com/api/v1/self/jobs/suggest',
                     {
-                        headers: { Authorization: `Bearer ${dataToken}` },
+                        headers: { Authorization: `Bearer ${token}` },
                     }, {
                     "headers": {
                         'Content-Type': 'application/json',
@@ -115,7 +117,7 @@ const JobList = ({ navigation }) => {
                 <Text style={{
                     color: 'white',
                     fontSize: 16
-                }}>Find Job</Text>
+                }}>Company</Text>
             </View>
             <View style={{ marginHorizontal: 10, marginVertical: 10, flexDirection: 'row', alignItems: 'center' }}>
                 <Image
@@ -197,7 +199,7 @@ const JobList = ({ navigation }) => {
                                 AsyncStorage.setItem("companyId", item.id)
                                 AsyncStorage.setItem("companyName", item.name)
 
-                                navigation.navigate("JobListItem")
+                                navigation.navigate("CompanyListItem")
                             }
                             }
                             style={{
@@ -231,4 +233,4 @@ const JobList = ({ navigation }) => {
     )
 }
 
-export default JobList
+export default CompanyList

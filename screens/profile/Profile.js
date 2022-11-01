@@ -10,6 +10,8 @@ import {
     Keyboard,
     ScrollView,
     FlatList,
+    TouchableHighlight,
+    StyleSheet
 } from 'react-native';
 import { Icon } from 'react-native-vector-icons/Icon';
 import { images, icons, colors } from '../../constants/index';
@@ -19,6 +21,7 @@ import { formatDate } from '../../utilies/DateTime'
 
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 // import {
 //     user as UserRepository
@@ -31,7 +34,6 @@ function Profile({ navigation }, props) {
     useEffect(() => {
         getProfile()
         getUserDetail()
-
     }, [])
 
     //user
@@ -135,6 +137,253 @@ function Profile({ navigation }, props) {
 
     const { avatar, description, location, skills } = profile
 
+    //deleteEducation
+    const deleteEdu = async (education_id) => {
+        try {
+            const dataToken = await AsyncStorage.getItem('access');
+            axios
+                .delete(
+                    `https://spiderpig83.pythonanywhere.com/api/v1/education/${education_id}`,
+                    {
+                        headers: { Authorization: `Bearer ${dataToken}` },
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    },
+                )
+                .then(res => {
+                    if (res.status != 200) {
+                        throw 'Fail request';
+                    } else {
+                        alert('Xóa thành công')
+                    }
+                })
+                .catch(e => {
+                    // debugger
+                    let abc = false;
+
+
+                    // console.log(`get jobs error ${e}`);
+                });
+        } catch (error) {
+            // debugger
+            throw error;
+        }
+    };
+
+    //deleteExp
+    const deleteExp = async (experience_id) => {
+        try {
+            const dataToken = await AsyncStorage.getItem('access');
+            axios
+                .delete(
+                    `https://spiderpig83.pythonanywhere.com/api/v1/experience/${experience_id}`,
+                    {
+                        headers: { Authorization: `Bearer ${dataToken}` },
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    },
+                )
+                .then(res => {
+                    if (res.status != 200) {
+                        throw 'Fail request';
+                    } else {
+                        alert('Xóa thành công')
+                    }
+                })
+                .catch(e => {
+                    // debugger
+                    let abc = false;
+
+
+                    // console.log(`get jobs error ${e}`);
+                });
+        } catch (error) {
+            // debugger
+            throw error;
+        }
+    };
+
+    //deleteCer
+    const deleteCer = async (certificate_id) => {
+        try {
+            const dataToken = await AsyncStorage.getItem('access');
+            axios
+                .delete(
+                    `https://spiderpig83.pythonanywhere.com/api/v1/certificate/${certificate_id}`,
+                    {
+                        headers: { Authorization: `Bearer ${dataToken}` },
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    },
+                )
+                .then(res => {
+                    if (res.status != 200) {
+                        throw 'Fail request';
+                    } else {
+                        alert('Xóa thành công')
+                    }
+                })
+                .catch(e => {
+                    // debugger
+                    let abc = false;
+
+
+                    // console.log(`get jobs error ${e}`);
+                });
+        } catch (error) {
+            // debugger
+            throw error;
+        }
+    };
+
+
+    //education
+    const deleteRowEdu = (rowMap, rowKey) => {
+        const prevIndex = education.findIndex(item => item.id === rowKey);
+        deleteEdu(rowKey)
+        const newData = [...education];
+        newData.splice(prevIndex, 1);
+        setEducation(newData);
+    };
+
+    const onRowDidOpen = rowKey => {
+        console.log('This row opened', rowKey);
+    };
+
+    const renderItemEducation = data => (
+        <TouchableHighlight
+            onPress={() => console.log('You touched me')}
+            style={styles.rowFront}
+            underlayColor={colors.primary}
+        >
+            <View>
+                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                    {data.item.school_name}
+                </Text>
+                <Text>{data.item.field_of_study}</Text>
+                <Text style={{ marginBottom: 5 }}>{formatDate(data.item.start_date)} - {formatDate(data.item.end_date)}</Text>
+
+            </View>
+        </TouchableHighlight>
+    );
+    const renderHiddenItemEducation = (data, rowMap) => (
+        <View style={styles.rowBack}>
+            <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnRight]}
+                onPress={() => deleteRowEdu(rowMap, data.item.id)}
+            >
+                <Image
+                    source={icons.icon_bin}
+                    style={{
+                        width: 30,
+                        height: 30,
+                    }}
+                />
+
+            </TouchableOpacity>
+        </View>
+    );
+
+    //experrient
+    const deleteRowExp = (rowMap, rowKey) => {
+        const prevIndex = experience.findIndex(item => item.id === rowKey);
+        deleteExp(rowKey)
+        const newData = [...experience];
+        newData.splice(prevIndex, 1);
+        setExperience(newData);
+    };
+
+    const renderItemExp = data => (
+        <TouchableHighlight
+            onPress={() => console.log('You touched me')}
+            style={styles.rowFront}
+            underlayColor={colors.primary}
+        >
+            <View>
+                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                    {data.item.company_name}
+                </Text>
+                <Text>{data.item.title}</Text>
+                <Text style={{ marginBottom: 5 }}>{formatDate(data.item.start_date)} - {formatDate(data.item.end_date)}</Text>
+
+
+            </View>
+        </TouchableHighlight>
+    );
+    const renderHiddenItemExp = (data, rowMap) => (
+        <View style={styles.rowBack}>
+            <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnRight]}
+                onPress={() => deleteRowExp(rowMap, data.item.id)}
+            >
+                <Image
+                    source={icons.icon_bin}
+                    style={{
+                        width: 30,
+                        height: 30,
+                    }}
+                />
+
+            </TouchableOpacity>
+        </View>
+    );
+
+    //cer
+    const deleteRowCer = (rowMap, rowKey) => {
+        const prevIndex = certificate.findIndex(item => item.id === rowKey);
+        deleteCer(rowKey)
+        const newData = [...certificate];
+        newData.splice(prevIndex, 1);
+        setCertificate(newData);
+    };
+
+    const renderItemCer = data => (
+        <TouchableHighlight
+            onPress={() => console.log('You touched me')}
+            style={styles.rowFront}
+            underlayColor={colors.primary}
+        >
+            <View>
+                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                    {data.item.name}
+                </Text>
+                <Text>{data.item.issue_organization}</Text>
+                <Text style={{ marginBottom: 5 }}>{data.item.issue_date}</Text>
+
+
+            </View>
+        </TouchableHighlight>
+    );
+    const renderHiddenItemCer = (data, rowMap) => (
+        <View style={styles.rowBack}>
+            <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnRight]}
+                onPress={() => deleteRowCer(rowMap, data.item.id)}
+            >
+                <Image
+                    source={icons.icon_bin}
+                    style={{
+                        width: 30,
+                        height: 30,
+                    }}
+                />
+
+            </TouchableOpacity>
+        </View>
+    );
+
+
+
+
 
     return (
         <View>
@@ -163,7 +412,7 @@ function Profile({ navigation }, props) {
                                 width: 100,
                                 height: 100,
                                 borderRadius: 100,
-                                marginTop: -50,
+                                marginTop: -80,
                             }}
                         />
                         <Text
@@ -279,26 +528,16 @@ function Profile({ navigation }, props) {
                                 marginTop: 5,
                             }}
                         />
-                        <FlatList
-                            // ref={}
-                            data={[...education]}
-                            keyExtractor={item => item.id}
-                            renderItem={({ item }) => <View
-                                style={{
-                                    marginBottom: 5
-                                }}>
-                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
-                                    {item.school_name}
-                                </Text>
-                                <Text>{item.field_of_study}</Text>
-                                <Text style={{ marginBottom: 5 }}>{formatDate(item.start_date)} - {formatDate(item.end_date)}</Text>
-                                <View style={{ width: '70%', height: 1, backgroundColor: colors.primary }} />
-                            </View>}
+                        <SwipeListView
+                            data={education}
+                            renderItem={renderItemEducation}
+                            renderHiddenItem={renderHiddenItemEducation}
+                            rightOpenValue={-75}
+                            previewRowKey={'0'}
+                            previewOpenValue={-40}
+                            previewOpenDelay={3000}
+                            onRowDidOpen={onRowDidOpen}
                         />
-
-
-
-
                     </View>
                 </View>
 
@@ -361,20 +600,15 @@ function Profile({ navigation }, props) {
                                 marginTop: 5,
                             }}
                         />
-                        <FlatList
+                        <SwipeListView
                             data={experience}
-                            keyExtractor={item => item.id}
-                            renderItem={({ item }) => <View
-                                style={{
-                                    marginBottom: 5
-                                }}>
-                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
-                                    {item.company_name}
-                                </Text>
-                                <Text>{item.title}</Text>
-                                <Text style={{ marginBottom: 5 }}>{formatDate(item.start_date)} - {formatDate(item.end_date)}</Text>
-                                <View style={{ width: '70%', height: 1, backgroundColor: colors.primary }} />
-                            </View>}
+                            renderItem={renderItemExp}
+                            renderHiddenItem={renderHiddenItemExp}
+                            rightOpenValue={-75}
+                            previewRowKey={'0'}
+                            previewOpenValue={-40}
+                            previewOpenDelay={3000}
+                            onRowDidOpen={onRowDidOpen}
                         />
 
                     </View>
@@ -440,20 +674,15 @@ function Profile({ navigation }, props) {
                                 marginTop: 5,
                             }}
                         />
-                        <FlatList
+                        <SwipeListView
                             data={certificate}
-                            keyExtractor={item => item.id}
-                            renderItem={({ item }) => <View
-                                style={{
-                                    marginBottom: 5
-                                }}>
-                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
-                                    {item.name}
-                                </Text>
-                                <Text>{item.issue_organization}</Text>
-                                <Text style={{ marginBottom: 5 }}>{item.issue_date}</Text>
-                                <View style={{ width: '70%', height: 1, backgroundColor: colors.primary }} />
-                            </View>}
+                            renderItem={renderItemCer}
+                            renderHiddenItem={renderHiddenItemCer}
+                            rightOpenValue={-75}
+                            previewRowKey={'0'}
+                            previewOpenValue={-40}
+                            previewOpenDelay={3000}
+                            onRowDidOpen={onRowDidOpen}
                         />
                     </View>
                 </View>
@@ -463,3 +692,42 @@ function Profile({ navigation }, props) {
 };
 
 export default Profile;
+
+const styles = StyleSheet.create({
+    container: {
+        // backgroundColor: 'white',
+        // flex: 1,
+        paddingVertical: 20
+    },
+    backTextWhite: {
+        color: '#FFF',
+    },
+    rowFront: {
+        // alignItems: 'center',
+        padding: 10,
+        backgroundColor: 'white',
+        borderBottomColor: colors.primary,
+        borderBottomWidth: 1,
+        // justifyContent: 'center',
+        // height: 50,
+    },
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: '#DDD',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    backRightBtn: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75,
+    },
+    backRightBtnRight: {
+        backgroundColor: 'colors.primary',
+        right: 0,
+    },
+});
