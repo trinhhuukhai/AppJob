@@ -15,17 +15,10 @@ import {
 import { images, icons, colors } from '../../constants/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { convertDateTimeToString2 } from '../../utilies/DateTime';
+
 
 const ListJobCandidate = ({ navigation }, props) => {
-
-
-  // const [companyId, setCompanyId] = useState('')
-  // const dataToken = AsyncStorage.getItem('companyName');
-  // let abc = []
-  // abc.name = dataToken
-  // debugger
-  // console.log(dataToken)
-  // setCompanyId(dataToken)
 
 
   //data job
@@ -35,19 +28,14 @@ const ListJobCandidate = ({ navigation }, props) => {
 
   }, [])
 
-  // const [companyId, setCompanyId] = useState('')
-  const [token, setToken] = useState('')
-  const [cmpId, setCmpId] = useState('')
-
-
+  const [searchText, setSearchText] = useState('')
 
 
   //job
-  const [jobOfCompany, setJobOfCompany] = useState([])
+  const [allJob, setALlJob] = useState([])
   const getListJob= async () => {
     try {
       const dataToken = await AsyncStorage.getItem('access');
-      const companyId = await AsyncStorage.getItem('companyId');
       axios
         .get(
           `https://spiderpig83.pythonanywhere.com/api/v1/jobs`,
@@ -63,13 +51,15 @@ const ListJobCandidate = ({ navigation }, props) => {
           if (res.status != 200) {
             throw "Fail request"
           } else {
+          
             let resJob = res.data.jobs
-            setJobOfCompany(resJob)
-            // debugger
+            setALlJob(resJob)
+      
 
           }
         })
         .catch(e => {
+        
           console.log(`get error error ${e}`);
         });
     } catch (error) {
@@ -82,6 +72,7 @@ const ListJobCandidate = ({ navigation }, props) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
+      
                 <View style={{
                 width: '100%',
                 height: 50,
@@ -127,7 +118,7 @@ const ListJobCandidate = ({ navigation }, props) => {
                         fontWeight: 'bold'
                     }}
 
-                    placeholder='Keywork skill (Java,..), Job Title, Company ...'
+                    placeholder='Keywork Job Title, skill, ...'
                 />
 
             </View>
@@ -141,10 +132,10 @@ const ListJobCandidate = ({ navigation }, props) => {
             }} />
 
       <FlatList
-        data={jobOfCompany}
+        data={allJob.filter(item => item.title?.toLowerCase().includes(searchText.toLowerCase()) || JSON.stringify(item.skills)?.toLowerCase().includes(searchText.toLowerCase()))}
 
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <View style={{
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <View key={item.id} style={{
           // flexDirection: 'row',
           padding: 20
         }}>
@@ -191,7 +182,7 @@ const ListJobCandidate = ({ navigation }, props) => {
                 }}
                 style={{
                   backgroundColor: colors.primary,
-                  width: '50%',
+                  width: '100%',
                   // alignSelf: 'center',
                   alignItems: 'center',
                   borderRadius: 7,
@@ -202,9 +193,9 @@ const ListJobCandidate = ({ navigation }, props) => {
                   padding: 5,
                   color: 'white',
                   fontSize: 12
-                }}>Xem chi tiet</Text>
+                }}>See details</Text>
               </TouchableOpacity>
-              <Text>{item.id}</Text>
+              <Text>Date posted: {convertDateTimeToString2(item.date_posted)}</Text>
             </View>
           </View>
           <View style={{

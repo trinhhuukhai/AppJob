@@ -10,6 +10,7 @@ import {
 import { images, icons, colors } from '../constants/index';
 import { UiButton } from '../components/index';
 import axios from 'axios';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 //component = function
 
@@ -18,44 +19,47 @@ function Welcome(props) {
 
     const [role, setRole] = useState('')
 
+    let [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-            handleGetToken();
-       
-    },[handleGetToken]);
+        handleGetToken();
+
+    }, [handleGetToken]);
 
     const handleGetToken = async () => {
         const dataToken = await AsyncStorage.getItem('access');
 
         if (!dataToken) {
             navigation.replace('Login');
-        } else {    
-        axios
-        .get(
-            'https://spiderpig83.pythonanywhere.com/api/v1/self/info',
-            {
-                headers: { Authorization: `Bearer ${dataToken}` },
-            }, {
-            "headers": {
-                'Content-Type': 'application/json',
-            }
-        }
-        )
-        .then(res => {
-            let roleApi = res.data.role
-            setRole(roleApi)
-            console.log(roleApi);
+        } else {
+            axios
+                .get(
+                    'https://spiderpig83.pythonanywhere.com/api/v1/self/info',
+                    {
+                        headers: { Authorization: `Bearer ${dataToken}` },
+                    }, {
+                    "headers": {
+                        'Content-Type': 'application/json',
+                    }
+                }
+                )
+                .then(res => {
+                    let roleApi = res.data.role
+                    setRole(roleApi)
+                    console.log(roleApi);
 
-            AsyncStorage.setItem("roleApi", roleApi)
-            navigation.replace('UITabs');
+                    AsyncStorage.setItem("roleApi", roleApi)
+                    setIsLoading(false)
+                    navigation.replace('UITabs');
 
 
-        })
-        .catch(e => {
-            console.log(`logout error ${e}`);
+                })
+                .catch(e => {
+                    console.log(`logout error ${e}`);
+                    setIsLoading(false)
 
-        });
-          
+                });
+
         }
     };
 
@@ -82,11 +86,14 @@ function Welcome(props) {
     const { navigate, goback } = navigation
 
     return (
+
+        
         <View
             style={{
                 // backgroundColor: 'white',
                 flex: 100,
             }}>
+             <Spinner color='#00ff00' size={"large"} visible={isLoading} />
             <ImageBackground
                 source={images.background}
                 resizeMode="cover"

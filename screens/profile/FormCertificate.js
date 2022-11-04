@@ -84,7 +84,7 @@ const FormCertificate = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Te chung chi"
+                        placeholder="Name certificate"
                     />
                     <TextInput
                         onChangeText={text => {
@@ -97,7 +97,7 @@ const FormCertificate = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Ten trung tam"
+                        placeholder="Organization"
                     />
 
                     <TextInput
@@ -111,7 +111,7 @@ const FormCertificate = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Ngay bat dau"
+                        placeholder="Issue date"
                     />
                     <TextInput
                         onChangeText={text => {
@@ -124,7 +124,7 @@ const FormCertificate = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Ngay het han"
+                        placeholder="Expiration date"
                     />
 
                 </View>
@@ -154,7 +154,7 @@ const FormCertificate = ({ navigation }) => {
                             padding: 10,
                             color: 'white',
                             fontSize: 14
-                        }}>Xac Nhan</Text>
+                        }}>Save</Text>
                     </TouchableOpacity>
                 </View>
                 <Text>{access}</Text>

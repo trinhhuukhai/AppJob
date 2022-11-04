@@ -15,53 +15,25 @@ import {
 import { images, icons, colors } from '../../constants/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const CompanyListItem = ({ navigation }, props) => {
+  let [isLoading, setIsLoading] = useState(true);
 
-
-  // const [companyId, setCompanyId] = useState('')
-  // const dataToken = AsyncStorage.getItem('companyName');
-  // let abc = []
-  // abc.name = dataToken
-  // debugger
-  // console.log(dataToken)
-  // setCompanyId(dataToken)
-
-
-  //data job
   useEffect(() => {
-
-
     getInfoCompany()
-    getListCompany()
+    getListJobOfCompany()
     getCity()
+  },[])
 
-    // getCopanyName()
-  }, [])
-
-  // const [nameCopany, setNameCompany] = useState()
-  // const getCopanyName = async () =>{
-  //   const nameComp = await AsyncStorage.getItem('companyName');
-  //   setNameCompany(nameComp)
-  //   // let compa = {}
-  //   // compa.name = nameComp
-  //   // debugger  
-
-  // }
-
-  //info company
-  //job
   const [infoCompany, setInfoConpany] = useState([])
-  // const [companyId, setCompanyId] = useState('')
-  const [token, setToken] = useState('')
-  const [cmpId, setCmpId] = useState('')
+
 
   const getInfoCompany = async () => {
     try {
       const dataToken = await AsyncStorage.getItem('access');
       const companyId = await AsyncStorage.getItem('companyId');
-      setToken(dataToken)
-      setCmpId(companyId)
+     
       axios
         .get(
           `https://spiderpig83.pythonanywhere.com/api/v1/company/${companyId}`,
@@ -77,12 +49,13 @@ const CompanyListItem = ({ navigation }, props) => {
           if (res.status != 200) {
             throw "Fail request"
           } else {
+            setIsLoading(false)
             let resJob = res.data
             let info = {}
             info.nameCompany = resJob.name
             info.Min = resJob.business_size_min
             info.Max = resJob.business_size_max
-           
+
 
             setInfoConpany(info)
             // debugger
@@ -91,6 +64,7 @@ const CompanyListItem = ({ navigation }, props) => {
           }
         })
         .catch(e => {
+          setIsLoading(false)
           console.log(`get error error ${e}`);
         });
     } catch (error) {
@@ -101,12 +75,12 @@ const CompanyListItem = ({ navigation }, props) => {
   const { nameCompany, Min, Max } = infoCompany
 
   const [city, setCity] = useState([])
-  // const [companyId, setCompanyId] = useState('')
 
   const getCity = async () => {
     try {
       const dataToken = await AsyncStorage.getItem('access');
       const idCity = await AsyncStorage.getItem('idCity');
+
       axios
         .get(
           `https://spiderpig83.pythonanywhere.com/api/v1/city/${idCity}`,
@@ -122,6 +96,7 @@ const CompanyListItem = ({ navigation }, props) => {
           if (res.status != 200) {
             throw "Fail request"
           } else {
+            setIsLoading(false)
             let rescity = res.data.name
 
             setCity(rescity)
@@ -132,6 +107,7 @@ const CompanyListItem = ({ navigation }, props) => {
           }
         })
         .catch(e => {
+          setIsLoading(false)
           console.log(`get error error ${e}`);
         });
     } catch (error) {
@@ -148,7 +124,7 @@ const CompanyListItem = ({ navigation }, props) => {
   const [jobOfCompany, setJobOfCompany] = useState([])
   // const [companyId, setCompanyId] = useState('')
 
-  const getListCompany = async () => {
+  const getListJobOfCompany =async () => {
     try {
       const dataToken = await AsyncStorage.getItem('access');
       const companyId = await AsyncStorage.getItem('companyId');
@@ -167,6 +143,7 @@ const CompanyListItem = ({ navigation }, props) => {
           if (res.status != 200) {
             throw "Fail request"
           } else {
+            setIsLoading(false)
             let resJob = res.data.jobs
             setJobOfCompany(resJob)
             // debugger
@@ -174,6 +151,7 @@ const CompanyListItem = ({ navigation }, props) => {
           }
         })
         .catch(e => {
+          setIsLoading(false)
           console.log(`get error error ${e}`);
         });
     } catch (error) {
@@ -186,6 +164,7 @@ const CompanyListItem = ({ navigation }, props) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <Spinner color='#00ff00' size={"large"} visible={isLoading} />
       <View style={{
         flexDirection: 'row',
         alignItems: 'center',
@@ -261,7 +240,7 @@ const CompanyListItem = ({ navigation }, props) => {
         data={jobOfCompany}
 
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <View style={{
+        renderItem={({ item }) => <View key={item.id} style={{
           // flexDirection: 'row',
           padding: 20
         }}>
@@ -290,7 +269,7 @@ const CompanyListItem = ({ navigation }, props) => {
                 {item.skills.map((ski) =>
                   <Text key={ski.id} style={{
                     // backgroundColor:'red',
-                    
+
                     borderWidth: 1,
                     borderColor: colors.primary,
                     padding: 3,
@@ -308,7 +287,7 @@ const CompanyListItem = ({ navigation }, props) => {
                 }}
                 style={{
                   backgroundColor: colors.primary,
-                  width: '50%',
+                  width: '100%',
                   // alignSelf: 'center',
                   alignItems: 'center',
                   borderRadius: 7,
@@ -319,9 +298,8 @@ const CompanyListItem = ({ navigation }, props) => {
                   padding: 5,
                   color: 'white',
                   fontSize: 12
-                }}>Xem chi tiet</Text>
+                }}>See details</Text>
               </TouchableOpacity>
-              <Text>{item.id}</Text>
             </View>
           </View>
           <View style={{

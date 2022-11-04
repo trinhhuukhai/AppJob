@@ -17,8 +17,10 @@ import { formatDate } from '../../..//utilies/DateTime'
 
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 function ViewProfileUser({ navigation }, props) {
+    let [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         getUserDetail()
@@ -45,11 +47,13 @@ function ViewProfileUser({ navigation }, props) {
                     }
                 },)
                 .then(res => {
+                    setIsLoading(false)
                     console.log('Accept thanh cong')
-                    debugger
+
 
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     alert("Save không thành công!!")
                     console.log(`post error ${e}`);
                     // debugger
@@ -82,6 +86,7 @@ function ViewProfileUser({ navigation }, props) {
                     if (res.status != 200) {
                         throw "Fail request"
                     } else {
+                        setIsLoading(false)
                         let responseUser = res.data
                         let user = {}
                         user.userId = responseUser.id
@@ -98,6 +103,7 @@ function ViewProfileUser({ navigation }, props) {
                     }
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     console.log(`get error error ${e}`);
                 });
         } catch (error) {
@@ -134,6 +140,7 @@ function ViewProfileUser({ navigation }, props) {
                     if (res.status != 200) {
                         throw "Fail request"
                     } else {
+                        setIsLoading(false)
                         // debugger
                         let profileData = res.data
 
@@ -155,6 +162,7 @@ function ViewProfileUser({ navigation }, props) {
 
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     console.log(`get error error ${e}`);
 
                 });
@@ -170,6 +178,7 @@ function ViewProfileUser({ navigation }, props) {
 
     return (
         <ScrollView>
+            <Spinner color='#00ff00' size={"large"} visible={isLoading} />
 
             <View
                 style={{
@@ -188,7 +197,7 @@ function ViewProfileUser({ navigation }, props) {
                         // alignItems: 'center',
                         // paddingStart: 20
                         // marginHorizontal: 30
-                        marginLeft:10
+                        marginLeft: 10
                     }}>
                     <Image
                         source={images.profile_user}

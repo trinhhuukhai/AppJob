@@ -22,7 +22,7 @@ function Company({ navigation }, props) {
 
     //data job
     useEffect(() => {
-        getListJob()
+        getCompany()
     }, [])
 
     //job
@@ -31,7 +31,7 @@ function Company({ navigation }, props) {
 
     const { name, logo, business_size_min, business_size_max, id } = selfCompany
 
-    const getListJob = async () => {
+    const getCompany = async () => {
         try {
             const dataToken = await AsyncStorage.getItem('access');
             axios
@@ -128,12 +128,8 @@ function Company({ navigation }, props) {
                             fontSize: 18,
                             marginBottom: 10
                         }}>{name}</Text>
-                        <Text>Min:{business_size_min}</Text>
-                        <Text>Max:{business_size_max}</Text>
-                        <Text>Id:{id}</Text>
-
-
-
+                        <Text>Business size min: {business_size_min}</Text>
+                        <Text>Business size min: {business_size_max}</Text>
                     </View>
                 </View>
 

@@ -41,6 +41,7 @@ function CreateJob({ navigation }, props) {
 
   const [categories, setCategories] = useState([])
   const [subCategories, setSubCategories] = useState([])
+  const [token, setToken] = useState('')
 
 
 
@@ -50,6 +51,7 @@ function CreateJob({ navigation }, props) {
       let result = []
 
       const dataToken = await AsyncStorage.getItem('access');
+      setToken(dataToken)
       axios
         .get(
           `https://spiderpig83.pythonanywhere.com/api/v1/categories`,
@@ -89,16 +91,16 @@ function CreateJob({ navigation }, props) {
   };
 
   //get sub cat
-  const getSubCategory = async () => {
+  const getSubCategory =  () => {
     try {
       let result = []
 
-      const dataToken = await AsyncStorage.getItem('access');
+      // const dataToken = await AsyncStorage.getItem('access');
       axios
         .get(
           `https://spiderpig83.pythonanywhere.com/api/v1/category/${category}/subcategories`,
           {
-            headers: { Authorization: `Bearer ${dataToken}` },
+            headers: { Authorization: `Bearer ${token}` },
           }, {
           "headers": {
             'Content-Type': 'application/json',
@@ -181,12 +183,12 @@ function CreateJob({ navigation }, props) {
           fontSize: 20,
           alignSelf: 'center',
           color: colors.primary
-        }}>Tao cong viec moi</Text>
+        }}>Create new job</Text>
         <SelectList
           setSelected={setCategory}
           boxStyles={{ marginTop: 20 }}
           data={categories}
-          placeholder={"Chon nganh"}
+          placeholder={"Job industry"}
           onPress={getSubCategory()}
         // defaultOption={{ key: 'EL', value: 'Electronics'}}
         />
@@ -194,7 +196,7 @@ function CreateJob({ navigation }, props) {
           setSelected={setSubCategory}
           boxStyles={{ marginTop: 20 }}
           data={subCategories}
-          placeholder={"Chon linh vuc"}
+          placeholder={"Field"}
 
         />
         <TextInput
@@ -209,7 +211,7 @@ function CreateJob({ navigation }, props) {
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="Ten cong viec"
+          placeholder="Job name"
         />
         <TextInput
           onChangeText={text => {
@@ -222,7 +224,7 @@ function CreateJob({ navigation }, props) {
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="Thong tin them ve cong viec"
+          placeholder="Description: Develop, team building,..."
         />
         <TextInput
           onChangeText={text => {
@@ -234,7 +236,7 @@ function CreateJob({ navigation }, props) {
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="Yeu cau cong viec"
+          placeholder="Requirements: Using VCS, OOP, ..."
         />
         <TextInput
           onChangeText={text => {
@@ -246,7 +248,7 @@ function CreateJob({ navigation }, props) {
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="Ky nang can co"
+          placeholder="Skills: Java, OOP, Git, ..."
         />
         <TextInput
           onChangeText={text => {
@@ -258,7 +260,7 @@ function CreateJob({ navigation }, props) {
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="Muc luong toi thieu"
+          placeholder="Salary min"
         />
         <TextInput
           onChangeText={text => {
@@ -271,7 +273,7 @@ function CreateJob({ navigation }, props) {
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="Muc luong toi da"
+          placeholder="Salary max"
         />
         <TextInput
           onChangeText={text => {
@@ -284,7 +286,7 @@ function CreateJob({ navigation }, props) {
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="Dia diem lam viec"
+          placeholder="Address"
         />
 
       </View>
@@ -302,7 +304,7 @@ function CreateJob({ navigation }, props) {
            
             createJob()
             alert("Them moi cong viec thanh cong")
-            navigation.navigate('ListJob')
+            navigation.navigate('Company')
           }}
           style={{
             backgroundColor: colors.primary,

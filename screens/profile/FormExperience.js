@@ -88,7 +88,7 @@ const FormExperience = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Chức vụ, vị trí..."
+                        placeholder="Position.."
                     />
                     <TextInput
                         onChangeText={text => {
@@ -101,27 +101,21 @@ const FormExperience = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Tên công ty"
+                        placeholder="Company name"
                     />
                     <TextInput
                         onChangeText={text => {
                             setDescription((Array.from(text.split(','))))
                             console.log(description)
                         }} //khi thay doi email/password cap nhap gia tri text
-                        multiline={true}
-                        numberOfLines={10}
                         style={{
                             // backgroundColor:'red',
                             height: 40,
                             borderBottomWidth: 1,
                             color: 'red',
-                            marginBottom: 10,
-                            height: 100,
-                            justifyContent: 'flex-start'
-
-
+                            marginBottom: 10
                         }}
-                        placeholder="Mô tả cụ thể công việc: mỗi thông tin cách nhau dấu phẩy"
+                        placeholder="Description: Develop, Manage,.."
                     />
 
                     <TextInput
@@ -135,7 +129,7 @@ const FormExperience = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Ngay bat dau lam"
+                        placeholder="Start date"
                     />
                     <TextInput
                         onChangeText={text => {
@@ -148,7 +142,7 @@ const FormExperience = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Ngay ket thuc"
+                        placeholder="End date"
                     />
                     <TextInput
                         onChangeText={text => {
@@ -161,7 +155,7 @@ const FormExperience = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Địa chỉ"
+                        placeholder="Address company"
                     />
 
                 </View>
@@ -191,7 +185,7 @@ const FormExperience = ({ navigation }) => {
                             padding: 10,
                             color: 'white',
                             fontSize: 14
-                        }}>Xac Nhan</Text>
+                        }}>Save</Text>
                     </TouchableOpacity>
                 </View>
                 <Text>{access}</Text>

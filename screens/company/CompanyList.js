@@ -17,12 +17,13 @@ import SelectList from 'react-native-dropdown-select-list'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 const CompanyList = ({ navigation }) => {
 
     //data job
     useEffect(() => {
         getListCompany()
-    }, [])
+    })
 
     //company
     const [token, setToken] = useState('')
@@ -66,43 +67,7 @@ const CompanyList = ({ navigation }) => {
 
     const [city, setCity] = useState([])
     // const [companyId, setCompanyId] = useState('')
-
-
-    //job
-    const [allJob, setAllJob] = useState([])
-    const getAllJobs =() => {
-        try {
-            // const dataToken = await AsyncStorage.getItem('access');
-            axios
-                .get(
-                    'https://spiderpig83.pythonanywhere.com/api/v1/self/jobs/suggest',
-                    {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }, {
-                    "headers": {
-                        'Content-Type': 'application/json',
-                    }
-                }
-                )
-                .then(res => {
-                    if (res.status != 200) {
-                        throw "Fail request"
-                    } else {
-                        let resJob = res.data.jobs
-                        setAllJob(resJob)
-                        // AsyncStorage.setItem("IdCity", item.city_id)
-                        debugger
-
-                    }
-                })
-                .catch(e => {
-                    console.log(`get error error ${e}`);
-                });
-        } catch (error) {
-            // debugger
-            throw error
-        }
-    };
+    const [searchText, setSearchText] = useState('')
 
     return (
 
@@ -152,7 +117,7 @@ const CompanyList = ({ navigation }) => {
                         fontWeight: 'bold'
                     }}
 
-                    placeholder='Keywork skill (Java,..), Job Title, Company ...'
+                    placeholder='Keywork Company ...'
                 />
 
             </View>
@@ -166,12 +131,12 @@ const CompanyList = ({ navigation }) => {
             }} />
 
             <FlatList
-                data={company}
+                data={company.filter(item => item.name?.toLowerCase().includes(searchText.toLowerCase()))}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => <View style={{
                     justifyContent: 'center',
                     alignItems: 'center',
-                    padding: 15
+                    // padding: 10
                 }}>
                     <Image
                         style={{
@@ -186,12 +151,12 @@ const CompanyList = ({ navigation }) => {
                     <Text style={{
                         fontSize: 18,
                         fontWeight: 'bold',
-                        marginTop: 20,
-                        marginBottom: 10
+                        marginTop: 10,
+                        // marginBottom: 10
                     }}>{item.name}</Text>
                     <View style={{
                         flexDirection: 'row',
-                        marginTop: 5
+                        // marginTop: 5
                     }}>
                         <TouchableOpacity
 
@@ -215,7 +180,7 @@ const CompanyList = ({ navigation }) => {
                                 padding: 5,
                                 color: 'white',
                                 fontSize: 12
-                            }}>Xem Job</Text>
+                            }}>See Job</Text>
                         </TouchableOpacity>
 
                     </View>

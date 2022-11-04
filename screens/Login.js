@@ -7,26 +7,42 @@ import {
     TouchableOpacity,
     TextInput,
     KeyboardAvoidingView,
-    Keyboard
+    Keyboard,
+    ActivityIndicator
 } from 'react-native';
 import { images, icons, colors } from '../constants/index';
 import { UiButton } from '../components/index';
 import { isValidEmail, isValidPassword } from '../utilies/Validation'
 
-import {AuthContext} from '../repositories/AuthContext'
+import { AuthContext } from '../repositories/AuthContext'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 
 
 //moi 1 function = class = component
 function Login(props) {
-    const {navigation, route} = props
+
+    //spiner
+    let [isLoading, setIsLoading] = useState(true);
+    let [error, setError] = useState()
+    let [response, setResponse] = useState()
+
+    const getContent = () => {
+        if (isLoading) {
+            return <ActivityIndicator size="large" />
+
+        }
+    }
+
+
+    const { navigation, route } = props
     //function of navigate to/back
-    const {navigate, goback} = navigation
-    
-    
+    const { navigate, goback } = navigation
+
+
 
     const [keyboardIsShow, setkeyboardIsShow] = useState(false)
 
@@ -42,36 +58,42 @@ function Login(props) {
 
     const login = (email, password) => {
         axios
-          .post('https://spiderpig83.pythonanywhere.com/api/v1/token/auth', {
-            email,
-            password,
-          }, {
-            "headers": {
-              'Content-Type': 'application/json',
-            }
-          })
-          .then(res => {
-            let userInfo = res.data;
-            let access = userInfo.access
-            setData(access)
-            //save access to storage
-            AsyncStorage.setItem("access", access)
-            alert('Đăng nhập thành công')
-    
-            //redriac
-            navigate('Welcome')
-          })
-          .catch(e => {
-            console.log(`login error ${e}`);
-            alert('Đăng nhập không thành công!!!')
-            
-          });
-      };
+            .post('https://spiderpig83.pythonanywhere.com/api/v1/token/auth', {
+                email,
+                password,
+            }, {
+                "headers": {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(res => {
+                setIsLoading(false)
+                let userInfo = res.data;
+                let access = userInfo.access
+                setData(access)
+                //save access to storage
+                AsyncStorage.setItem("access", access)
+                // alert('Đăng nhập thành công')
+                setIsLoading(false)
+                setResponse(res)
+
+                //redriac
+                navigate('Welcome')
+            })
+            .catch(e => {
+                setIsLoading(false)
+                console.log(`login error ${e}`);
+                setIsLoading(false)
+                setError(e)
+                alert('Đăng nhập không thành công!!!')
+
+            });
+    };
 
 
 
     // const {isLoading, login, getUser} = useContext(AuthContext);
-    
+
 
     const validOk = () => email.length > 0 && password.length > 0 && isValidEmail(email) == true && isValidPassword(password) == true
 
@@ -85,10 +107,10 @@ function Login(props) {
         })
     })
 
- 
+
 
     return (
-        
+
         <KeyboardAvoidingView //tong the man hinh
 
             style={{
@@ -96,6 +118,7 @@ function Login(props) {
                 backgroundColor: 'white',
 
             }}>
+            <Spinner color='#00ff00' size={"large"} visible={isLoading} />
             {/* <Spinner visible={isLoading} /> */}
             <View //man hinh top logo
                 style={{
@@ -205,12 +228,12 @@ function Login(props) {
                     // backgroundColor: 'green'
                 }}>
                 <TouchableOpacity
-                    disabled = {validOk() == false}
+                    disabled={validOk() == false}
                     onPress={() => {
                         login(email, password)
                     }}
                     style={{
-                        backgroundColor: validOk() ==true ? colors.primary :'gray',
+                        backgroundColor: validOk() == true ? colors.primary : 'gray',
                         width: '60%',
                         alignSelf: 'center',
                         alignItems: 'center',

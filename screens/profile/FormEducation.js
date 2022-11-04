@@ -20,8 +20,10 @@ import UiButton from '../../components'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { convertToArray } from '../../utilies/Validation'
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const FormEducation = ({ navigation }) => {
+    let [isLoading, setIsLoading] = useState(true);
 
     const [school_name, setName] = useState('')
     const [field_of_study, setField] = useState('')
@@ -52,11 +54,13 @@ const FormEducation = ({ navigation }) => {
                     }
                 },)
                 .then(res => {
+                    
                     console.log('them thanh cong')
                 
 
                 })
                 .catch(e => {
+                 
                     alert("Save không thành công!!")
                     console.log(`post error ${e}`);
                     // debugger
@@ -69,8 +73,11 @@ const FormEducation = ({ navigation }) => {
     };
 
     return (
+        
         <ScrollView>
+
             <View>
+            
                 <View style={{
                     paddingHorizontal: 20,
                     marginTop: 50,
@@ -86,7 +93,7 @@ const FormEducation = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Ten truong"
+                        placeholder="School name"
                     />
                     <TextInput
                         onChangeText={text => {
@@ -99,27 +106,21 @@ const FormEducation = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Ten chuyen nganh"
+                        placeholder="Specialized"
                     />
                     <TextInput
                         onChangeText={text => {
                             setDescription((Array.from(text.split(','))))
                             console.log(description)
                         }} //khi thay doi email/password cap nhap gia tri text
-                        multiline={true}
-                        numberOfLines={10}
                         style={{
                             // backgroundColor:'red',
                             height: 40,
                             borderBottomWidth: 1,
                             color: 'red',
-                            marginBottom: 10,
-                            height: 100,
-                            justifyContent: 'flex-start'
-
-
-                        }}
-                        placeholder="Mo ta hoc van"
+                            marginBottom: 10
+                        }}  
+                        placeholder="Description: GPA, activities,..."
                     />
 
                     <TextInput
@@ -133,7 +134,7 @@ const FormEducation = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Ngay bat dau hoc"
+                        placeholder="Start date"
                     />
                     <TextInput
                         onChangeText={text => {
@@ -146,7 +147,7 @@ const FormEducation = ({ navigation }) => {
                             color: 'red',
                             marginBottom: 10
                         }}
-                        placeholder="Ngay ket thuc hoc"
+                        placeholder="End date"
                     />
 
                 </View>
@@ -160,7 +161,7 @@ const FormEducation = ({ navigation }) => {
 
                         onPress={() => {
                             saveEdu()
-                            navigation.navigate('Profile')
+                            // navigation.navigate('Profile')
                         }}
                         style={{
                             backgroundColor: colors.primary,
@@ -176,7 +177,7 @@ const FormEducation = ({ navigation }) => {
                             padding: 10,
                             color: 'white',
                             fontSize: 14
-                        }}>Xac Nhan</Text>
+                        }}>Save</Text>
                     </TouchableOpacity>
                 </View>
                 <Text>{access}</Text>

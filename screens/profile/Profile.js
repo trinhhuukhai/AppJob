@@ -22,22 +22,24 @@ import { formatDate } from '../../utilies/DateTime'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 // import {
 //     user as UserRepository
 // } from '../../repositories'
 
 function Profile({ navigation }, props) {
+    let [isLoading, setIsLoading] = useState(true);
 
-
+    const [userApi, setUserApi] = useState([])
 
     useEffect(() => {
         getProfile()
         getUserDetail()
-    }, [])
+    },[])
 
     //user
-    const [userApi, setUserApi] = useState([])
+
     const getUserDetail = async () => {
         try {
             const dataToken = await AsyncStorage.getItem('access');
@@ -56,6 +58,7 @@ function Profile({ navigation }, props) {
                     if (res.status != 200) {
                         throw "Fail request"
                     } else {
+                        setIsLoading(false)
                         let responseUser = res.data
                         let user = {}
                         user.userId = responseUser.id
@@ -69,6 +72,7 @@ function Profile({ navigation }, props) {
                     }
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     console.log(`get error error ${e}`);
                 });
         } catch (error) {
@@ -104,6 +108,7 @@ function Profile({ navigation }, props) {
                     if (res.status != 200) {
                         throw "Fail request"
                     } else {
+                        setIsLoading(false)
                         // debugger
                         let profileData = res.data
 
@@ -125,6 +130,7 @@ function Profile({ navigation }, props) {
 
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     console.log(`get error error ${e}`);
 
                 });
@@ -157,6 +163,7 @@ function Profile({ navigation }, props) {
                     if (res.status != 200) {
                         throw 'Fail request';
                     } else {
+                        setIsLoading(false)
                         alert('Xóa thành công')
                     }
                 })
@@ -193,10 +200,12 @@ function Profile({ navigation }, props) {
                     if (res.status != 200) {
                         throw 'Fail request';
                     } else {
+                        setIsLoading(false)
                         alert('Xóa thành công')
                     }
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     // debugger
                     let abc = false;
 
@@ -229,10 +238,12 @@ function Profile({ navigation }, props) {
                     if (res.status != 200) {
                         throw 'Fail request';
                     } else {
+                        setIsLoading(false)
                         alert('Xóa thành công')
                     }
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     // debugger
                     let abc = false;
 
@@ -253,6 +264,7 @@ function Profile({ navigation }, props) {
         const newData = [...education];
         newData.splice(prevIndex, 1);
         setEducation(newData);
+        setIsLoading(false)
     };
 
     const onRowDidOpen = rowKey => {
@@ -266,6 +278,7 @@ function Profile({ navigation }, props) {
             underlayColor={colors.primary}
         >
             <View>
+            <Spinner color='#00ff00' size={"large"} visible={isLoading} />
                 <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
                     {data.item.school_name}
                 </Text>
@@ -309,6 +322,7 @@ function Profile({ navigation }, props) {
             underlayColor={colors.primary}
         >
             <View>
+            <Spinner color='#00ff00' size={"large"} visible={isLoading} />
                 <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
                     {data.item.company_name}
                 </Text>
@@ -344,6 +358,7 @@ function Profile({ navigation }, props) {
         const newData = [...certificate];
         newData.splice(prevIndex, 1);
         setCertificate(newData);
+        setIsLoading(false)
     };
 
     const renderItemCer = data => (
@@ -353,6 +368,7 @@ function Profile({ navigation }, props) {
             underlayColor={colors.primary}
         >
             <View>
+            <Spinner color='#00ff00' size={"large"} visible={isLoading} />
                 <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
                     {data.item.name}
                 </Text>
@@ -382,11 +398,16 @@ function Profile({ navigation }, props) {
     );
 
 
-
+    const handleLogout = () => {
+        AsyncStorage.clear();
+        navigation.navigate('Login');
+        setIsLoading(false)
+    };
 
 
     return (
         <View>
+        <Spinner color='#00ff00' size={"large"} visible={isLoading} />
             <ScrollView>
 
                 <View
@@ -395,8 +416,34 @@ function Profile({ navigation }, props) {
                         width: '100%',
                         backgroundColor: 'gray',
                         height: 100,
+                       
+                        alignItems:'flex-end'
                     }}
-                />
+                >
+                <View style={{
+                    backgroundColor:colors.primary,
+                    padding:3,
+                    borderRadius:5,
+                    alignItems:'center',
+                    justifyContent:'center',
+                    
+                    // borderWidth:1
+                    // borderColor:'white'
+                }}>
+                    <TouchableOpacity
+                        onPress={() =>
+                            handleLogout()
+                        }
+
+                    >
+                        <Text style={{
+                            fontSize: 18,
+                            color: 'white'
+                        }}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
+                </View>
+
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -415,6 +462,8 @@ function Profile({ navigation }, props) {
                                 marginTop: -80,
                             }}
                         />
+
+                        
                         <Text
                             style={{
                                 fontSize: 18,
@@ -483,6 +532,7 @@ function Profile({ navigation }, props) {
                         marginHorizontal: 10,
                         marginTop: 10,
                     }}>
+                    <Spinner color='#00ff00' size={"large"} visible={isLoading} />
                     <View
                         style={{
                             flexDirection: 'row',
@@ -556,6 +606,7 @@ function Profile({ navigation }, props) {
                         marginHorizontal: 10,
                         marginTop: 10,
                     }}>
+                    <Spinner color='#00ff00' size={"large"} visible={isLoading} />
                     <View
                         style={{
                             flexDirection: 'row',
@@ -630,6 +681,7 @@ function Profile({ navigation }, props) {
                         marginHorizontal: 10,
                         marginTop: 10,
                     }}>
+                    <Spinner color='#00ff00' size={"large"} visible={isLoading} />
                     <View
                         style={{
                             flexDirection: 'row',
@@ -727,7 +779,7 @@ const styles = StyleSheet.create({
         width: 75,
     },
     backRightBtnRight: {
-        backgroundColor: 'colors.primary',
+        // backgroundColor: 'colors.primary',
         right: 0,
     },
 });

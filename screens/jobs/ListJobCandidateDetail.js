@@ -19,16 +19,19 @@ import { Select } from '../../components'
 import UiButton from '../../components';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-const ListJobCandidateDetail = () => {
+const ListJobCandidateDetail = ({navigation}) => {
 
     const [id, setId] = useState('')
     //data job
     useEffect(() => {
-        getListCompany()
+        getListJob()
         // getJobiddd()
     }, [])
 
+
+    let [isLoading, setIsLoading] = useState(true);
 
     const [jobInfo, setJobInfo] = useState([])
     const [jobName, setJobName] = useState([])
@@ -44,7 +47,7 @@ const ListJobCandidateDetail = () => {
 
     const [jobId, setJobId] = useState('')
 
-    const getListCompany = async () => {
+    const getListJob = async () => {
         try {
             const dataToken = await AsyncStorage.getItem('access');
             const jobid = await AsyncStorage.getItem('jobId');
@@ -65,6 +68,7 @@ const ListJobCandidateDetail = () => {
                     if (res.status != 200) {
                         throw "Fail request"
                     } else {
+                        setIsLoading(false)
                         let resJob = res.data
                         let nameJob = resJob.title
                         let locationName = resJob.location
@@ -85,7 +89,7 @@ const ListJobCandidateDetail = () => {
                         setJobSkills(jobSkill)
                         setSalaryMin(salaryMin)
                         setSalaryMax(salaryMax)
-                        setJobId(joId)
+                        // setJobId(joId)
                         // debugger          
                         setJobInfo(resJob)
                         // debugger
@@ -93,6 +97,7 @@ const ListJobCandidateDetail = () => {
                     }
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     console.log(`get error error ${e}`);
                     debugger
                 });
@@ -103,7 +108,7 @@ const ListJobCandidateDetail = () => {
     };
 
 
-    const saveJob = async () => {
+    const saveJob = () => {
         try {
             // const dataToken = await AsyncStorage.getItem('access');
             // const jobId = await AsyncStorage.getItem('jobId');
@@ -119,10 +124,12 @@ const ListJobCandidateDetail = () => {
                     }
                 },)
                 .then(res => {
-                    alert('Save khong thanh cong')
+                    setIsLoading(false)
+                    alert('Save thanh cong')
 
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     alert("Save không thành công!!")
                     console.log(`post error ${e}`);
                     // debugger
@@ -134,7 +141,7 @@ const ListJobCandidateDetail = () => {
 
     };
 
-    const ApplyJob = async () => {
+    const ApplyJob = () => {
         try {
             // const dataToken = await AsyncStorage.getItem('access');
             // const jobId = await AsyncStorage.getItem('jobId');
@@ -150,10 +157,12 @@ const ListJobCandidateDetail = () => {
                     }
                 },)
                 .then(res => {
+                    setIsLoading(false)
                     alert('Apply thanh cong')
 
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     alert("Apply không thành công!!")
                     console.log(`post error ${e}`);
                     // debugger
@@ -169,6 +178,7 @@ const ListJobCandidateDetail = () => {
     //   const { namejo } = jobName
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <Spinner color='#00ff00' size={"large"} visible={isLoading} />
             <View style={{
                 // justifyContent:'center',
                 alignItems: 'center',
@@ -189,10 +199,10 @@ const ListJobCandidateDetail = () => {
                 marginHorizontal: 10
             }}>
                 <TouchableOpacity
-
-
                     onPress={() => {
                         saveJob()
+                        
+                        
                     }}
                     style={{
                         backgroundColor: colors.primary,
@@ -210,6 +220,7 @@ const ListJobCandidateDetail = () => {
                         color: 'white',
                         fontSize: 12
                     }}>Save</Text>
+                     
                 </TouchableOpacity>
                 <TouchableOpacity
 
@@ -297,7 +308,7 @@ const ListJobCandidateDetail = () => {
                         renderItem={({ item }) => <View style={{
                             marginLeft: 10
                         }}>
-                            <Text key={item.id}  style={{
+                            <Text key={item.id} style={{
                                 marginTop: 10
                             }}>- {item}</Text>
                         </View>}
@@ -322,7 +333,7 @@ const ListJobCandidateDetail = () => {
                     <FlatList
                         data={jobRequirement}
                         keyExtractor={item => item.id}
-                        renderItem={({ item }) => <View  style={{
+                        renderItem={({ item }) => <View style={{
                             marginLeft: 10
                         }}>
                             <Text key={item.id} style={{

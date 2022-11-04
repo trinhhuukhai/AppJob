@@ -19,8 +19,11 @@ import { Select } from '../../components'
 import UiButton from '../../components';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import{convertDateTimeToString2} from '../../utilies/DateTime'
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const SaveJobItem = () => {
+    let [isLoading, setIsLoading] = useState(true);
 
     const [id, setId] = useState('')
     //data job
@@ -67,6 +70,7 @@ const SaveJobItem = () => {
                     if (res.status != 200) {
                         throw "Fail request"
                     } else {
+                        setIsLoading(false)
                         let resJob = res.data
                         let nameJob = resJob.title
                         let locationName = resJob.location
@@ -95,6 +99,7 @@ const SaveJobItem = () => {
                     }
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     console.log(`get error error ${e}`);
                     debugger
                 });
@@ -106,40 +111,12 @@ const SaveJobItem = () => {
 
 
 
-    const saveJob = async (companyId) => {
-        try {
-            const dataToken = await AsyncStorage.getItem('access');
-            const companyId = await AsyncStorage.getItem('jobId');
-            axios
-                .post('https://spiderpig83.pythonanywhere.com/api/v1/self/jobs/saved',
-                    {
-                        companyId
-                    }, {
-                    "headers": {
-                        'Authorization': `Bearer ${dataToken}`,
-                        'Content-Type': 'application/json',
-                    }
-                },)
-                .then(res => {
-                    // debugger
-                })
-                .catch(e => {
-                    console.log(`post error ${e}`);
-                    // debugger
-
-                });
-        } catch (error) {
-            throw error
-            debugger
-
-        }
-
-    };
-
+    
 
     //   const { namejo } = jobName
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
+         <Spinner color='#00ff00' size={"large"} visible={isLoading} />
             <View style={{
                 // justifyContent:'center',
                 alignItems: 'center',
@@ -172,7 +149,7 @@ const SaveJobItem = () => {
                 alignItems: "center",
                 marginTop: 10,
                 marginLeft: 20,
-                marginBottom:5
+                marginBottom: 5
             }}>
                 <Image source={icons.icon_maps} style={{
                     width: 15,
@@ -192,7 +169,7 @@ const SaveJobItem = () => {
                     height: 15,
                     marginRight: 5
                 }} />
-                <Text>{datePoster}</Text>
+                <Text>{convertDateTimeToString2(datePoster)}</Text>
             </View>
 
             <View style={{
@@ -203,11 +180,8 @@ const SaveJobItem = () => {
             }} />
 
 
-            <ScrollView style={{
 
-            }}>
-
-
+            <ScrollView>
                 <View style={{
                     padding: 10
                 }}>
@@ -221,7 +195,7 @@ const SaveJobItem = () => {
                     <FlatList
                         data={jobDescription}
                         keyExtractor={item => item.id}
-                        renderItem={({ item }) => <View style={{
+                        renderItem={({ item }) => <View key={item.id} style={{
                             marginLeft: 10
                         }}>
                             <Text style={{
@@ -249,7 +223,7 @@ const SaveJobItem = () => {
                     <FlatList
                         data={jobRequirement}
                         keyExtractor={item => item.id}
-                        renderItem={({ item }) => <View style={{
+                        renderItem={({ item }) => <View key={item.id} style={{
                             marginLeft: 10
                         }}>
                             <Text style={{
@@ -276,7 +250,7 @@ const SaveJobItem = () => {
                     <FlatList
                         data={jobSkills}
                         keyExtractor={item => item.id}
-                        renderItem={({ item }) => <View style={{
+                        renderItem={({ item }) => <View key={item.id} style={{
                             marginLeft: 10
                         }}>
                             <Text style={{
@@ -315,10 +289,11 @@ const SaveJobItem = () => {
                         marginTop: 20
                     }} />
                 </View>
+
+
+
+
             </ScrollView>
-
-
-
 
 
 

@@ -13,14 +13,17 @@ import {
 import { images, icons, colors } from '../../../constants/index';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {convertDateTimeToString2} from '../../../utilies/DateTime'
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 function ListjobItem({ navigation }, props) {
+    let [isLoading, setIsLoading] = useState(true);
 
     //data job
     useEffect(() => {
         getListCompany()
-    }, [])
+    })
 
     //job
     const [user, setUser] = useState([])
@@ -46,6 +49,7 @@ function ListjobItem({ navigation }, props) {
                     if (res.status != 200) {
                         throw "Fail request"
                     } else {
+                        setIsLoading(false)
                         let resJob = res.data
                         let totalUser = resJob.total
                         let userApplyJob = resJob.applied_jobs
@@ -58,6 +62,7 @@ function ListjobItem({ navigation }, props) {
                     }
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     console.log(`get error error ${e}`);
                 });
         } catch (error) {
@@ -69,17 +74,18 @@ function ListjobItem({ navigation }, props) {
 
     return (
         <View style={{ flex: 1 }}>
+         <Spinner color='#00ff00' size={"large"} visible={isLoading} />
         <View style={{
             padding:20,
             justifyContent:'center',
             alignItems:'center'
         }}><Text style={{
             fontSize:20
-        }}>Tong so ung vien da Apply: {total}</Text></View>
+        }}>Total candidate applied: {total}</Text></View>
             
             <View style={{
                 width:'100%',
-                height:20,
+                height:10,
                 backgroundColor:'gray'
             }} />
 
@@ -88,16 +94,10 @@ function ListjobItem({ navigation }, props) {
                 // keyExtractor={item => item.id}
                 keyExtractor={(item, index) => `key-${index}`}
                 renderItem={({ item }) => <View style={{
+                    alignItems:'center',
                     padding:10
-                    // height:100,
-                    // backgroundColor:'red'
                 }}>
-                <Text>ID_jobApply: {item.id}</Text>
-                    <Text style={{
-                        fontSize:14,
-                        marginBottom:10
-                    }}>User id: {item.user_id}</Text>
-                    <Text>Ngay applly:{item.apply_date}</Text>
+                    <Text>Date applied: {convertDateTimeToString2(item.apply_date)}</Text>
                     <TouchableOpacity
 
                         onPress={() => {
@@ -122,12 +122,16 @@ function ListjobItem({ navigation }, props) {
                             padding: 5,
                             color: 'white',
                             fontSize: 12
-                        }}>Xem Profile</Text>
+                        }}>See Profile Details</Text>
                     </TouchableOpacity>
-                    <Text>Status: {item.status}</Text>
+                    <Text style={{
+                        fontWeight:'bold',
+                        color:colors.primary
+                    }}>Status: {item.status}</Text>
                     <View style={{
                         width:'100%',
                         height:1,
+                        marginTop:10,
                         backgroundColor:'gray'
                     }} />
                 </View>}

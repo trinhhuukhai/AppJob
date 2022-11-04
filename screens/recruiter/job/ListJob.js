@@ -18,14 +18,17 @@ import ListjobItem from './ListjobItem';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function ListJob({navigation}) {
+
+    let [isLoading, setIsLoading] = useState(true);
 
 
     //data job
     useEffect(() => {
         getListJob();
-    }, []);
+    });
 
     //job
     const [job, setJob] = useState([]);
@@ -51,6 +54,7 @@ export default function ListJob({navigation}) {
                     if (res.status != 200) {
                         throw 'Fail request';
                     } else {
+                        setIsLoading(false)
                         let resJob = res.data.jobs;
                         let total = res.data.total;
                         // debugger
@@ -60,6 +64,7 @@ export default function ListJob({navigation}) {
                     }
                 })
                 .catch(e => {
+                    setIsLoading(false)
                     // debugger
                     let abc = false;
 
@@ -90,6 +95,7 @@ export default function ListJob({navigation}) {
                     if (res.status != 200) {
                         throw 'Fail request';
                     } else {
+                        setIsLoading(false)
                         alert('Xóa thành công')
                     }
                 })
@@ -106,19 +112,13 @@ export default function ListJob({navigation}) {
         }
     };
 
-    const [listData, setListData] = useState(
-        Array(20)
-            .fill('')
-            .map((_, i) => ({ key: `${i}`, text: `item #${i}` }))
-    );
-
-
     const deleteRow = (rowMap, rowKey) => {
         const prevIndex = job.findIndex(item => item.id === rowKey);
         deleteJob(rowKey)
         const newData = [...job];
         newData.splice(prevIndex, 1);
         setJob(newData);
+        setIsLoading(false)
     };
 
     const onRowDidOpen = rowKey => {
@@ -192,7 +192,7 @@ export default function ListJob({navigation}) {
                         }}
                         style={{
                             backgroundColor: colors.primary,
-                            width: '60%',
+                            width: '100%',
                             // alignSelf: 'center',
                             alignItems: 'center',
                             borderRadius: 7,
@@ -203,12 +203,8 @@ export default function ListJob({navigation}) {
                             padding: 5,
                             color: 'white',
                             fontSize: 12
-                        }}>Xem chi tiet</Text>
+                        }}>See details</Text>
                     </TouchableOpacity>
-                    <Text>{data.item.id}</Text>
-
-
-
                 </View>
             </View>
         </TouchableHighlight>
@@ -234,6 +230,7 @@ export default function ListJob({navigation}) {
 
     return (
         <View style={styles.container}>
+         <Spinner color='#00ff00' size={"large"} visible={isLoading} />
             {totals === 0 ? (
                 <View>
                     <Text
@@ -242,7 +239,7 @@ export default function ListJob({navigation}) {
                             color: colors.primary,
                             alignSelf: 'center',
                         }}>
-                        Chua co cong viec nao duoc tao
+                        No jobs created yet!
                     </Text>
                 </View>
             ) : (
@@ -258,7 +255,7 @@ export default function ListJob({navigation}) {
                                 color: 'black',
                                 fontSize: 20,
                             }}>
-                            Danh sach cong viec
+                            Jobs List
                         </Text>
                     </View>
                     <View

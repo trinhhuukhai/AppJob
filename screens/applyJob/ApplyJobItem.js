@@ -8,7 +8,6 @@ import {
     TextInput,
     KeyboardAvoidingView,
     Keyboard,
-    ScrollView,
     FlatList,
     Picker
 } from 'react-native';
@@ -19,24 +18,20 @@ import { Select } from '../../components'
 import UiButton from '../../components';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'react-native-virtualized-view';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const ApplyJobItem = () => {
+    let [isLoading, setIsLoading] = useState(true);
 
     const [id, setId] = useState('')
+
     //data job
     useEffect(() => {
         getListCompany()
         // getJobiddd()
     }, [])
 
-
-    // const getJobiddd = async () =>{
-    //     const companyId = await AsyncStorage.getItem('jobId');
-    //     setId(companyId)
-    //     debugger
-
-    // }
-    //job
     const [jobInfo, setJobInfo] = useState([])
     const [jobName, setJobName] = useState([])
     const [location, setLocation] = useState([])
@@ -47,14 +42,20 @@ const ApplyJobItem = () => {
     const [salaryMin, setSalaryMin] = useState([])
     const [salaryMax, setSalaryMax] = useState([])
     const [jobId, setJobId] = useState('')
+    // const [token, setToken] = useState('')
+    // const [jId, setJid] = useState('')
+
 
     const getListCompany = async () => {
         try {
             const dataToken = await AsyncStorage.getItem('access');
-            const companyId = await AsyncStorage.getItem('jobId');
+            const dataJobId = await AsyncStorage.getItem('jobId');
+
+            // setToken(dataToken)
+            // setJid(dataJobId)
             axios
                 .get(
-                    `https://spiderpig83.pythonanywhere.com/api/v1/job/${companyId}`,
+                    `https://spiderpig83.pythonanywhere.com/api/v1/job/${dataJobId}`,
                     {
                         headers: { Authorization: `Bearer ${dataToken}` },
                     }, {
@@ -67,6 +68,7 @@ const ApplyJobItem = () => {
                     if (res.status != 200) {
                         throw "Fail request"
                     } else {
+                        setIsLoading(false)
                         let resJob = res.data
                         let nameJob = resJob.title
                         let locationName = resJob.location
@@ -91,6 +93,7 @@ const ApplyJobItem = () => {
                         // debugger          
                         setJobInfo(resJob)
                         // debugger
+                        setIsLoading(false)
 
                     }
                 })
@@ -104,42 +107,9 @@ const ApplyJobItem = () => {
         }
     };
 
-
-
-    const saveJob = async (companyId) => {
-        try {
-            const dataToken = await AsyncStorage.getItem('access');
-            const companyId = await AsyncStorage.getItem('jobId');
-            axios
-                .post('https://spiderpig83.pythonanywhere.com/api/v1/self/jobs/saved',
-                    {
-                        companyId
-                    }, {
-                    "headers": {
-                        'Authorization': `Bearer ${dataToken}`,
-                        'Content-Type': 'application/json',
-                    }
-                },)
-                .then(res => {
-                    // debugger
-                })
-                .catch(e => {
-                    console.log(`post error ${e}`);
-                    // debugger
-
-                });
-        } catch (error) {
-            throw error
-            debugger
-
-        }
-
-    };
-
-
-    //   const { namejo } = jobName
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
+           <Spinner color='#00ff00' size={"large"} visible={isLoading} />
             <View style={{
                 // justifyContent:'center',
                 alignItems: 'center',
@@ -172,7 +142,7 @@ const ApplyJobItem = () => {
                 alignItems: "center",
                 marginTop: 10,
                 marginLeft: 20,
-                marginBottom:5
+                marginBottom: 5
             }}>
                 <Image source={icons.icon_maps} style={{
                     width: 15,
@@ -203,11 +173,8 @@ const ApplyJobItem = () => {
             }} />
 
 
-            <ScrollView style={{
 
-            }}>
-
-
+            <ScrollView>
                 <View style={{
                     padding: 10
                 }}>
@@ -316,6 +283,7 @@ const ApplyJobItem = () => {
                     }} />
                 </View>
             </ScrollView>
+
 
 
 

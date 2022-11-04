@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { cloneElement, useEffect, useState } from 'react';
 import {
     Text,
     View,
@@ -18,7 +18,7 @@ import { convertDateTimeToString } from '../../../utilies/DateTime'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfileRecuiter = () => {
+const ProfileRecruiter = ({navigation}) => {
 
     useEffect(() => {
         getUserDetail()
@@ -65,37 +65,65 @@ const ProfileRecuiter = () => {
         }
     };
     const { userId, userName } = userApi
-
-  return (
-    <View>
-      <View style={{
+    const handleLogout = () => {
+        AsyncStorage.clear();
+        navigation.navigate('Login');
+    };
+    return (
+        <View>
+            <View
+                style={{
                     padding: 10,
                     width: '100%',
                     backgroundColor: 'gray',
                     height: 100,
-                    alignItems:'center'
-                    
-                }} />
+
+                    alignItems: 'flex-end'
+                }}
+            >
                 <View style={{
-                    marginHorizontal: 10,
-                    // alignItems:'center'
-                    marginLeft:40
+                    backgroundColor:colors.primary,
+                    padding:3,
+                    borderRadius:5,
+                    alignItems:'center',
+                    justifyContent:'center',
+                    
+                    // borderWidth:1
+                    // borderColor:'white'
                 }}>
-                    <Image source={images.profile_user} style={{
-                        width: 100,
-                        height: 100,
-                        borderRadius: 100,
-                        marginTop: -60
-                    }} />
-                    <Text style={{
-                        fontSize: 18,
-                        fontWeight: 'bold',
-                        marginTop: 10,
-                        color: 'black'
-                    }}>{userName}</Text>
+                    <TouchableOpacity
+                        onPress={() =>
+                            handleLogout()
+                        }
+
+                    >
+                        <Text style={{
+                            fontSize: 18,
+                            color: 'white'
+                        }}>Logout</Text>
+                    </TouchableOpacity>
                 </View>
-    </View>
-  )
+            </View>
+            <View style={{
+                marginHorizontal: 10,
+                // alignItems:'center'
+                marginLeft: 40
+            }}>
+                <Image source={images.profile_user} style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 100,
+                    marginTop: -60
+                }} />
+                <Text style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    marginTop: 10,
+                    color: 'black'
+                }}>{userName}</Text>
+            </View>
+        </View>
+    )
 }
 
-export default ProfileRecuiter
+export default ProfileRecruiter

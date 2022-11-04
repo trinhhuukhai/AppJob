@@ -49,7 +49,7 @@ const screenOptions = ({ route }) => ({
     } else if (screenName == "Profiles") {
       iconName = icons.icon_profile_white
     }
-    else if (screenName == "JobRecuiterStack") {
+    else if (screenName == "JobCompany") {
       iconName = icons.icon_job_recruiter
     }
     else if (screenName == "ProfileCandidateStack") {
@@ -59,7 +59,7 @@ const screenOptions = ({ route }) => ({
       iconName = icons.icon_profile_white
     } else if (screenName == "Setting") {
       iconName = icons.icon_setting_logout
-    } else if (screenName == "CompanyStack") {
+    } else if (screenName == "InfoCompany") {
       iconName = icons.icon_company
     } else if (screenName == "Jobs") {
       iconName = icons.icon_find_job
@@ -115,7 +115,7 @@ function Profilles() {
 }
 
 const StackRecuiterJob = createNativeStackNavigator()
-function JobRecuiterStack() {
+function JobCompany() {
   return (
     <StackRecuiterJob.Navigator screenOptions={{ headerShown: true }}>
       <StackRecuiterJob.Screen name={"ListJob"} component={ListJob} />
@@ -128,7 +128,7 @@ function JobRecuiterStack() {
 }
 
 const StackCompany = createNativeStackNavigator()
-function CompanyStack() {
+function InfoCompany() {
   return (
     <StackRecuiterJob.Navigator screenOptions={{ headerShown: true }}>
       <StackCompany.Screen name={"Company"} component={Company} />
@@ -184,6 +184,7 @@ function Applied() {
 
 
 function UITabs(props) {
+  const [isLoading, setIsLoading] = useState(false);
 
   const { navigation, route } = props
   //function of navigate to/back
@@ -208,6 +209,7 @@ function UITabs(props) {
   };
 
   const handleLogout = () => {
+    setIsLoading(true)
     AsyncStorage.clear();
     navigate('Login');
   };
@@ -220,20 +222,20 @@ function UITabs(props) {
   <Text>{role}</Text>
   </View> */}
     {role === "candidate" ? <Tab.Navigator screenOptions={screenOptions}>
-      {/* <Tab.Screen name={"Jobs"} component={Jobs} />
+      <Tab.Screen name={"Jobs"} component={Jobs} />
       <Tab.Screen name={"Companys"} component={Companys} />
       <Tab.Screen name={"Saved"} component={Saved} />
-      <Tab.Screen name={"Applied"} component={Applied} /> */}
+      <Tab.Screen name={"Applied"} component={Applied} />
       <Tab.Screen name={"Profiles"} component={Profilles} />
       {/* <Tab.Screen name={"Setting"} component={Setting} /> */}
 
     </Tab.Navigator>
       :
       <Tab.Navigator screenOptions={screenOptions}>
-        <Tab.Screen name={"CompanyStack"} component={CompanyStack} />
-        <Tab.Screen name={"JobRecuiterStack"} component={JobRecuiterStack} />
+        <Tab.Screen name={"InfoCompany"} component={InfoCompany} />
+        <Tab.Screen name={"JobCompany"} component={JobCompany} />
         <Tab.Screen name={"ProfileRecuiter"} component={ProfileRecuiter} />
-        <Tab.Screen name={"Setting"} component={Setting} />
+        {/* <Tab.Screen name={"Setting"} component={Setting} /> */}
 
       </Tab.Navigator>
     }

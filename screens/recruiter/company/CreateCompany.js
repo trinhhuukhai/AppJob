@@ -28,9 +28,10 @@ function CreateCompany({ navigation }, props) {zz
 
   useEffect(() => {
     getCity()
-  }, [])
+  })
 
   const [cities, setCities] = useState([])
+  const [token, setToken] = useState('')
 
   // const.log(result)
   const getCity = async () => {
@@ -38,6 +39,7 @@ function CreateCompany({ navigation }, props) {zz
       let result = []
 
       const dataToken = await AsyncStorage.getItem('access');
+      setToken(dataToken)
       axios
         .get(
           `https://spiderpig83.pythonanywhere.com/api/v1/cities`,
@@ -77,9 +79,9 @@ function CreateCompany({ navigation }, props) {zz
     }
   };
 
-  const createCompany = async () => {
+  const createCompany =  () => {
     try {
-      const dataToken = await AsyncStorage.getItem('access');
+      // const dataToken = await AsyncStorage.getItem('access');
 
       // debugger
       axios
@@ -91,7 +93,7 @@ function CreateCompany({ navigation }, props) {zz
             business_size_max: businessMax,
           }, {
           "headers": {
-            'Authorization': `Bearer ${dataToken}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           }
         },)
@@ -124,7 +126,7 @@ function CreateCompany({ navigation }, props) {zz
           fontSize: 20,
           alignSelf: 'center',
           color: colors.primary
-        }}>Tao cong ty moi</Text>
+        }}>Create new company</Text>
 
         <SelectList
           boxStyles={{ marginTop: 20 }}
@@ -144,7 +146,7 @@ function CreateCompany({ navigation }, props) {zz
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="Ten cong ty"
+          placeholder="Name"
         />
         <TextInput
           onChangeText={text => {
@@ -156,7 +158,7 @@ function CreateCompany({ navigation }, props) {zz
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="So luong nhan vien toi thieu"
+          placeholder="Business size min"
         />
         <TextInput
           onChangeText={text => {
@@ -169,7 +171,7 @@ function CreateCompany({ navigation }, props) {zz
             color: 'red',
             marginBottom: 10
           }}
-          placeholder="So luong nhan vien toi da"
+          placeholder="Business size max"
         />
       </View>
 
